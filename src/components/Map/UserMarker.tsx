@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Circle, Marker, Popup, useMapEvents } from "react-leaflet";
+import { useState } from "react";
+import { Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -17,22 +17,20 @@ export function UserMarker() {
     click: (e) => {
       console.log(e);
       setPosition(e.latlng);
-      map.locate();
+      console.log(position);
     },
   });
   return (
-    <Marker position={{ lat: 0, lng: 0 }} icon={icon} eventHandlers={{
+    <Marker
+      position={position}
+      icon={icon}
+      eventHandlers={{
         click: (e) => {
-          console.log('marker clicked', e)
+          console.log("marker clicked", e);
         },
-      }}>    
-      <Popup position={position}>
-        <div style={{backgroundColor: 'red', position: 'absolute'}}>
-            Hello
-            <Circle center={position} radius={200} pathOptions={{ color: 'blue' }} />
-        </div>
-      </Popup>
+      }}
+    >
+      <Popup position={position}>Add your info to left</Popup>
     </Marker>
-    
   );
 }
