@@ -23,14 +23,21 @@ export default function AddNewItem() {
   const [newItem, setNewItem] = useState<NewItemDataType>({
     instagram: "",
     latLng: [0, 0],
-    isUskEvent: false,
+    isUskEvent: true,
     location: "",
     photoUrl: "",
   });
 
   const handleData = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target!.name;
-    const value = e.target!.value;
+    let value: boolean | string;
+
+    if (name === "isUskEvent") {
+      value = e.target.checked;
+    } else {
+      value = e.target!.value;
+    }
+
     setNewItem((pre) => ({
       ...pre,
       [name]: value,
@@ -71,8 +78,13 @@ export default function AddNewItem() {
           <FormControl>
             <FormLabel component="legend">Is this USK Event?</FormLabel>
             <FormControlLabel
-              control={<Switch defaultChecked />}
-              label="Is this USK Event?"
+              control={
+                <Switch
+                  name="isUskEvent"
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleData(e)}
+                />
+              }
+              label={newItem.isUskEvent ? 'Yes': 'No'}
             />
           </FormControl>
           <Button variant="outlined" onClick={() => console.log(newItem)}>

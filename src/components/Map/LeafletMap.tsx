@@ -22,7 +22,6 @@ function LeafletMap() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
       />
-      <UserMarker />
       {points.map((point, index) => (
         <Marker position={point.LatLng} icon={icon} key={index}>
           <Popup position={[-100, 51.505]} minWidth={500} maxWidth={500}>
