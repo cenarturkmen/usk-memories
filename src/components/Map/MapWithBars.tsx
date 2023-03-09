@@ -1,18 +1,20 @@
+import MapMarkerProvider from "@/context/MapMarkerContext";
 import dynamic from "next/dynamic";
-import AddNewItem from "./AddNewItem";
-import { UserMarker } from "./UserMarker";
+import Form from "./Form";
 
 const LeafletMapDynamic = dynamic(() => import("@/components/Map"), {
-    ssr: false,
-  });
+  ssr: false,
+});
 
 export function MapWithBars() {
   return (
     <>
-      <div className="flex">
-        <LeafletMapDynamic />
-        <AddNewItem />
-      </div>
+      <MapMarkerProvider>
+        <div className="flex">
+          <LeafletMapDynamic />
+          <Form />
+        </div>
+      </MapMarkerProvider>
     </>
   );
 }

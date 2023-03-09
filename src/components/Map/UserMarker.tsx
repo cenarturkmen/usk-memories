@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import MapMarkerProvider, {
+  MapMarkerContext,
+} from "@/context/MapMarkerContext";
 
 const icon = L.icon({
   iconUrl: "/images/marker-icon.png",
@@ -12,17 +15,17 @@ const icon = L.icon({
 });
 
 export function UserMarker() {
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const { setLatLng, latLng } = useContext(MapMarkerContext);
   const map = useMapEvents({
     click: (e) => {
       console.log(e);
-      setPosition(e.latlng);
-      console.log(position);
+      setLatLng([e.latlng.lat, e.latlng.lng]);
+      console.log(latLng);
     },
   });
   return (
     <Marker
-      position={position}
+      position={latLng}
       icon={icon}
       eventHandlers={{
         click: (e) => {
@@ -30,7 +33,7 @@ export function UserMarker() {
         },
       }}
     >
-      <Popup position={position}>Add your info to left</Popup>
+      <Popup position={latLng}>Add your info to left</Popup>
     </Marker>
   );
 }
