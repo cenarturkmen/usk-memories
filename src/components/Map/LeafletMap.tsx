@@ -5,10 +5,16 @@ import L from "leaflet";
 import { UserMarker } from "./UserMarker";
 import { useState } from "react";
 import { points } from "./MockData";
+import { Button } from "@mui/material";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
-function LeafletMap() {
+interface LeafletMapProps {
+  addMarker: () => void;
+  showForm: boolean;
+}
+
+function LeafletMap({ addMarker, showForm }: LeafletMapProps) {
   const position: LatLngExpression = [41.0098, 28.9652]; // istanbul's location
   const [zoom, setZoom] = useState(11);
 
@@ -31,6 +37,21 @@ function LeafletMap() {
         </Marker>
       ))}
       <UserMarker />
+      {!showForm && (
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{
+            zIndex: 1000,
+            position: "absolute",
+            left: "85%",
+            marginTop: "10px",
+          }}
+          onClick={addMarker}
+        >
+          Add Your Mark
+        </Button>
+      )}
     </MapContainer>
   );
 }
