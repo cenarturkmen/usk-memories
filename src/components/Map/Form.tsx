@@ -9,6 +9,7 @@ import {
   Input,
   InputLabel,
   Switch,
+  Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import React, {
@@ -17,6 +18,7 @@ import React, {
   SetStateAction,
   useContext,
 } from "react";
+import { LatLng } from "leaflet";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
@@ -32,12 +34,14 @@ export default function Form({ setShowForm }: FormProps) {
     setLocation,
     photoUrl,
     setPhotoUrl,
+    description,
+    setDescription,
     latLng,
   } = useContext(MapMarkerContext);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(instagram, isUskEvent, location, photoUrl);
+    console.log(instagram, isUskEvent, location, description, photoUrl);
   };
 
   return (
@@ -76,6 +80,19 @@ export default function Form({ setShowForm }: FormProps) {
               />
             </FormControl>
             <FormControl sx={{ mb: "10px" }}>
+              <InputLabel htmlFor="description">Description</InputLabel>
+              <Input
+                name="description"
+                value={description}
+                required
+                multiline
+                minRows={2}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setDescription(e.target.value)
+                }
+              />
+            </FormControl>
+            <FormControl sx={{ mb: "10px" }}>
               <InputLabel htmlFor="photoUrl">Photo URL</InputLabel>
               <Input
                 name="photoUrl"
@@ -102,6 +119,12 @@ export default function Form({ setShowForm }: FormProps) {
               />
             </FormControl>
           </FormGroup>
+          <Typography variant="body2">
+            before submitting the form, please make sure that the coordinates
+            are not 0
+          </Typography>
+          <Typography variant="body2">{latLng[0]}</Typography>
+          <Typography variant="body2">{latLng[1]}</Typography>
           <Button variant="outlined" type="submit">
             Click
           </Button>

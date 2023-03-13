@@ -5,11 +5,13 @@ type MapMarkerContextType = {
   latLng: [number, number];
   isUskEvent: boolean;
   location: string;
+  description: string;
   photoUrl: string;
   setInstagram: React.Dispatch<React.SetStateAction<string>>;
   setLatLng: React.Dispatch<React.SetStateAction<[number, number]>>;
   setIsUskEvent: React.Dispatch<React.SetStateAction<boolean>>;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
   setPhotoUrl: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -22,12 +24,14 @@ const defaultContextData: MapMarkerContextType = {
   latLng: [0, 0],
   isUskEvent: true,
   location: "",
+  description: "",
   photoUrl: "",
   setInstagram: () => {},
   setLatLng: () => {},
   setIsUskEvent: () => {},
   setLocation: () => {},
   setPhotoUrl: () => {},
+  setDescription: () => {},
 };
 
 export const MapMarkerContext =
@@ -44,6 +48,9 @@ const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({ children }) => {
     defaultContextData.isUskEvent
   );
   const [location, setLocation] = useState<string>(defaultContextData.location);
+  const [description, setDescription] = useState<string>(
+    defaultContextData.description
+  );
   const [photoUrl, setPhotoUrl] = useState<string>(defaultContextData.photoUrl);
 
   return (
@@ -53,11 +60,13 @@ const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({ children }) => {
         latLng,
         isUskEvent,
         location,
+        description,
         photoUrl,
         setInstagram,
         setLatLng,
         setIsUskEvent,
         setLocation,
+        setDescription,
         setPhotoUrl,
       }}
     >
