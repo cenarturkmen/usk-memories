@@ -1,4 +1,4 @@
-import MapMarkerProvider from "@/context/MapMarkerContext";
+import { MapMarkerProvider } from "./../../context/MapMarkerContext";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import Form from "./Form";
