@@ -1,4 +1,4 @@
-import { MapMarkerContext } from "@/context/MapMarkerContext";
+import { MapMarkerContext } from "./../../context/MapMarkerContext";
 import {
   Button,
   FormControl,
@@ -18,7 +18,6 @@ import React, {
   SetStateAction,
   useContext,
 } from "react";
-import { LatLng } from "leaflet";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;

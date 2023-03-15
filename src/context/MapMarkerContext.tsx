@@ -37,7 +37,9 @@ const defaultContextData: MapMarkerContextType = {
 export const MapMarkerContext =
   createContext<MapMarkerContextType>(defaultContextData);
 
-const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({ children }) => {
+export const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({
+  children,
+}) => {
   const [instagram, setInstagram] = useState<string>(
     defaultContextData.instagram
   );
@@ -74,5 +76,3 @@ const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({ children }) => {
     </MapMarkerContext.Provider>
   );
 };
-
-export default MapMarkerProvider;

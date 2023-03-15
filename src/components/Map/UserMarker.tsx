@@ -2,9 +2,7 @@ import { useContext, useState } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import MapMarkerProvider, {
-  MapMarkerContext,
-} from "@/context/MapMarkerContext";
+import { MapMarkerContext } from "./../../context/MapMarkerContext";
 
 const icon = L.icon({
   iconUrl: "/images/marker-icon.png",
