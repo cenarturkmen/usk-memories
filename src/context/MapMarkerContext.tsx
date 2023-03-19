@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, {createContext, useState} from "react";
 
 type MapMarkerContextType = {
   instagram: string;
@@ -26,20 +26,26 @@ const defaultContextData: MapMarkerContextType = {
   location: "",
   description: "",
   photoUrl: "",
-  setInstagram: () => {},
-  setLatLng: () => {},
-  setIsUskEvent: () => {},
-  setLocation: () => {},
-  setPhotoUrl: () => {},
-  setDescription: () => {},
+  setInstagram: () => {
+  },
+  setLatLng: () => {
+  },
+  setIsUskEvent: () => {
+  },
+  setLocation: () => {
+  },
+  setPhotoUrl: () => {
+  },
+  setDescription: () => {
+  }
 };
 
 export const MapMarkerContext =
   createContext<MapMarkerContextType>(defaultContextData);
 
 export const MapMarkerProvider: React.FC<MapMarkerProviderProps> = ({
-  children,
-}) => {
+                                                                      children,
+                                                                    }) => {
   const [instagram, setInstagram] = useState<string>(
     defaultContextData.instagram
   );
