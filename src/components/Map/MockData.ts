@@ -1,45 +1,33 @@
-import { LatLngExpression } from "leaflet";
+import { MapDataType } from "@/types";
 
-export const points: { Name: string; LatLng: LatLngExpression }[] = [
-    {
-      Name: "Hagia Sophia",
-      LatLng: [41.0085, 28.9773],
-    },
-    {
-      Name: "Blue Mosque",
-      LatLng: [41.0054, 28.9764],
-    },
-    {
-      Name: "Topkapi Palace",
-      LatLng: [41.0115, 28.9833],
-    },
-    {
-      Name: "Grand Bazaar",
-      LatLng: [41.0102, 28.9683],
-    },
-    {
-      Name: "Spice Bazaar",
-      LatLng: [41.0173, 28.97],
-    },
-    {
-      Name: "Bosphorus Bridge",
-      LatLng: [41.0392, 29.0217],
-    },
-    {
-      Name: "Galata Tower",
-      LatLng: [41.0257, 28.9744],
-    },
-    {
-      Name: "Dolmabahce Palace",
-      LatLng: [41.0393, 29.0016],
-    },
-    {
-      Name: "Chora Church",
-      LatLng: [41.0314, 28.9484],
-    },
-    {
-      Name: "Suleymaniye Mosque",
-      LatLng: [41.0168, 28.9647],
-    },
-  ];
+export const points: MapDataType[] = [
+	{
+		id: 1,
+		instagram: "instagram_user1",
+		latLng: [41.0082, 28.9784], // Istanbul coordinates
+		isUskEvent: true,
+		description: "Join me for a coffee at the historic Pierre Loti Hill Café!",
+		location: "Pierre Loti Hill Café, Eyüp, Istanbul",
+		photoUrl: "https://picsum.photos/id/237/200/300"
+	},
+	{
+		id: 2,
+		instagram: "instagram_user2",
+		latLng: [41.0315, 28.9774], // Istanbul coordinates
+		isUskEvent: false,
+		description: "Explore the colorful street art in Kadiköy with me!",
+		location: "Kadiköy, Istanbul",
+		photoUrl: "https://picsum.photos/id/238/200/300"
+	},
+	{
+		id: 3,
+		instagram: "instagram_user3",
+		latLng: [41.0275, 28.9739], // Istanbul coordinates
+		isUskEvent: true,
+		description: "Let's watch the sunset from the Galata Tower!",
+		location: "Galata Tower, Beyoğlu, Istanbul",
+		photoUrl: "https://picsum.photos/id/239/200/300"
+	}
+
+];
   
