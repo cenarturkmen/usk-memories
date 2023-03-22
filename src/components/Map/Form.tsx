@@ -17,8 +17,10 @@ import React, {
   Dispatch,
   SetStateAction,
   useContext,
+  useState,
 } from "react";
 import addData from "@/firebase/addData";
+import { LoadingButton } from "@mui/lab";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
@@ -38,6 +40,9 @@ export default function Form({ setShowForm }: FormProps) {
     setDescription,
     latLng,
   } = useContext(MapMarkerContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [succes, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,12 +56,24 @@ export default function Form({ setShowForm }: FormProps) {
       latLng,
       date,
     };
+
+    setLoading(true);
+
     const { result, error } = await addData("marker", data);
     if (error) {
       console.log(error);
+      setError(true);
+      setSuccess(false);
     } else {
-      console.log(result);
+      setError(false);
+      setSuccess(true);
+      setInstagram("");
+      setLocation("");
+      setPhotoUrl("");
+      setDescription("");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -142,9 +159,15 @@ export default function Form({ setShowForm }: FormProps) {
           </Typography>
           <Typography variant="body2">{latLng[0]}</Typography>
           <Typography variant="body2">{latLng[1]}</Typography>
-          <Button variant="outlined" type="submit">
-            Click
-          </Button>
+          {!loading ? (
+            <Button variant="outlined" type="submit">
+              Sent
+            </Button>
+          ) : (
+            <LoadingButton loading>Sending</LoadingButton>
+          )}
+          {error ? "Something went wrong" : ""}
+          {succes ? "Succesfully sent" : ""}
         </form>
       </div>
     </>

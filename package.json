@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "latest",
+    "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "latest",
     "@types/leaflet": "^1.9.1",
     "@types/node": "18.14.1",
