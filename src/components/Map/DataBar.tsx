@@ -48,12 +48,12 @@ export default function DataBar({
       <Typography variant="body1" gutterBottom>
         Description: {description}
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      {/* <Typography variant="body1" gutterBottom>
         Coordinates: {latLng}
-      </Typography>
+      </Typography> */}
       {photoUrl && (
         <Image
-          src={photoUrl + "media/?size=l"}
+          src={convertInstagramUrl(photoUrl) + "media/?size=l"}
           alt={location}
           width={"300"}
           height={"500"}
@@ -61,4 +61,16 @@ export default function DataBar({
       )}
     </div>
   );
+}
+
+function convertInstagramUrl(url: string): string {
+  // Remove any query parameters or fragment identifier
+  url = url.split("?")[0].split("#")[0];
+
+  // Ensure the URL ends with a forward slash
+  if (!url.endsWith("/")) {
+    url += "/";
+  }
+
+  return url;
 }

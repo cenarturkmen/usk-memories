@@ -4,7 +4,7 @@ import { LatLngExpression } from "leaflet";
 import L from "leaflet";
 import { UserMarker } from "./UserMarker";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import { MapDataType } from "@/types";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
@@ -24,13 +24,20 @@ function LeafletMap({
   setShowRightBar,
   setRightBarData,
 }: LeafletMapProps) {
-  const position: LatLngExpression = [41.0098, 28.9652]; // istanbul's location
+  // istanbul's location
+  const [mapPosition, setMapPosition] = useState<LatLngExpression>([
+    41.0098, 28.9652,
+  ]);
   const [zoom, setZoom] = useState(11);
+
+  const isMobile = useMediaQuery("(min-width: 768px)");
+  const buttonLeftMargin = isMobile ? "90%" : "80%";
+  console.log(isMobile);
 
   return (
     <MapContainer
       className="w-screen h-screen"
-      center={position}
+      center={mapPosition}
       zoom={zoom}
       scrollWheelZoom={true}
     >
@@ -46,6 +53,7 @@ function LeafletMap({
             key={index}
             eventHandlers={{
               click: () => {
+                setMapPosition(point.latLng);
                 setShowRightBar(true);
                 setRightBarData({
                   instagram: point.instagram,
@@ -68,12 +76,12 @@ function LeafletMap({
           sx={{
             zIndex: 1000,
             position: "absolute",
-            left: "85%",
+            left: buttonLeftMargin,
             marginTop: "10px",
           }}
           onClick={addMarker}
         >
-          Add Your Mark
+          Add
         </Button>
       )}
     </MapContainer>
