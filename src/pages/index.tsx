@@ -6,7 +6,6 @@ export default function Home() {
   return (
     <>
       <ThemeProvider theme={themeOptions}>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
         <MapWithBars />
       </ThemeProvider>
     </>

@@ -1,6 +1,7 @@
 import { MapMarkerContext } from "@/context/MapMarkerContext";
 import {
   Button,
+  Chip,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -21,6 +22,7 @@ import React, {
 } from "react";
 import addData from "@/firebase/addData";
 import { LoadingButton } from "@mui/lab";
+import { Info } from "@mui/icons-material";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
@@ -44,6 +46,8 @@ export default function Form({ setShowForm }: FormProps) {
   const [error, setError] = useState(false);
   const [succes, setSuccess] = useState(false);
 
+  const [urlError, setUrlError] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const date = Date.now();
@@ -59,9 +63,10 @@ export default function Form({ setShowForm }: FormProps) {
 
     setLoading(true);
 
+    setPhotoUrl(convertInstagramUrl(photoUrl));
+
     const { result, error } = await addData("marker", data);
     if (error) {
-      console.log(error);
       setError(true);
       setSuccess(false);
     } else {
@@ -74,6 +79,22 @@ export default function Form({ setShowForm }: FormProps) {
     }
 
     setLoading(false);
+  };
+
+  const instagramValidator = (url: string) => {
+    const convertedUrl = convertInstagramUrl(url);
+    // const regex = new RegExp(
+    //   "https://www.instagram.com/p/([A-Za-z0-9-_]+)/.*/"
+    // );
+    // console.log(convertedUrl);
+    // if (regex.test(convertedUrl)) {
+    setPhotoUrl(convertedUrl);
+    setUrlError(false);
+    return true;
+    // } else {
+    //   setUrlError(true);
+    //   return false;
+    // }
   };
 
   return (
@@ -101,7 +122,7 @@ export default function Form({ setShowForm }: FormProps) {
                 }
               />
             </FormControl>
-            <FormControl sx={{ mb: "10px" }}>
+            <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="location">Location</InputLabel>
               <Input
                 name="location"
@@ -113,32 +134,33 @@ export default function Form({ setShowForm }: FormProps) {
                 }
               />
             </FormControl>
-            <FormControl sx={{ mb: "10px" }}>
+            <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="description">Description</InputLabel>
               <Input
                 name="description"
                 value={description}
                 required
                 multiline
-                minRows={2}
+                minRows={1}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setDescription(e.target.value)
                 }
               />
             </FormControl>
-            <FormControl sx={{ mb: "10px" }}>
+            <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="photoUrl">Photo URL</InputLabel>
               <Input
                 name="photoUrl"
                 value={photoUrl}
                 required
+                error={urlError}
                 aria-describedby="photoUrl"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setPhotoUrl(e.target.value)
-                }
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setPhotoUrl(e.target.value);
+                }}
               />
             </FormControl>
-            <FormControl>
+            <FormControl required sx={{ marginTop: "10px" }}>
               <FormLabel component="legend">Is this USK Event?</FormLabel>
               <FormControlLabel
                 control={
@@ -153,23 +175,50 @@ export default function Form({ setShowForm }: FormProps) {
               />
             </FormControl>
           </FormGroup>
-          <Typography variant="body2">
-            before submitting the form, please make sure that the coordinates
-            are not 0
-          </Typography>
-          <Typography variant="body2">{latLng[0]}</Typography>
-          <Typography variant="body2">{latLng[1]}</Typography>
-          {!loading ? (
-            <Button variant="outlined" type="submit">
-              Sent
-            </Button>
-          ) : (
-            <LoadingButton loading>Sending</LoadingButton>
-          )}
-          {error ? "Something went wrong" : ""}
-          {succes ? "Succesfully sent" : ""}
+          <div className="flex justify-center">
+            {!loading ? (
+              <Button variant="outlined" type="submit">
+                Sent
+              </Button>
+            ) : (
+              <LoadingButton loading>Sending</LoadingButton>
+            )}
+            {error ? "Something went wrong" : ""}
+            {succes ? "Succesfully sent" : ""}
+          </div>
         </form>
+        <div className="flex justify-center mt-10">
+          <Typography variant="body2">
+            <Chip
+              icon={<Info />}
+              sx={{
+                height: "auto",
+                "& .MuiChip-label": {
+                  display: "block",
+                  whiteSpace: "normal",
+                },
+              }}
+              label={"Make sure that the coordinates are not 0 0"}
+              variant="outlined"
+            ></Chip>
+            <div className="flex justify-center">
+              {latLng[0]} {latLng[1]}
+            </div>
+          </Typography>
+        </div>
       </div>
     </>
   );
+}
+
+function convertInstagramUrl(url: string): string {
+  // Remove any query parameters or fragment identifier
+  url = url.split("?")[0].split("#")[0];
+
+  // Ensure the URL ends with a forward slash
+  if (!url.endsWith("/")) {
+    url += "/";
+  }
+
+  return url;
 }
