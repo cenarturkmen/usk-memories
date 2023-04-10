@@ -1,9 +1,7 @@
-import { MapWithBars } from "@/components/Map/MapWithBars";
-
 export default function Home() {
   return (
     <>
-      <MapWithBars />
+      <h1>Home</h1>
     </>
   );
 }

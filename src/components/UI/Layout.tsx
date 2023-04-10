@@ -4,7 +4,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
       <ResponsiveAppBar />
-      {children}
+      <div>{children}</div>
     </>
   );
 };
