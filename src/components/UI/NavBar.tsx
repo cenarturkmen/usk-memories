@@ -14,11 +14,11 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Image from "next/image";
 import Link from "next/link";
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import { stringAvatar } from "@/utils/navbar-utils";
 import { useMediaQuery } from "@mui/material";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const pages = [
   { name: "About Us", href: "about-us" },
@@ -29,28 +29,16 @@ const pages = [
 const settings = ["Logout"];
 
 function ResponsiveAppBar() {
-  const [userAuth, loadingAuth, errorAuth] = useAuthState(auth);
+  const { data: session } = useSession();
   const isMobile = useMediaQuery("(max-width:600px)");
-  console.log(isMobile)
-  const googleAuth = new GoogleAuthProvider();
-  googleAuth.setCustomParameters({
-    prompt: "select_account",
-  });
+  console.log(isMobile);
 
   const loginHandler = async () => {
-    loadingAuth && console.log("loading");
-
-    try {
-      await signInWithPopup(auth, googleAuth);
-    } catch (error) {
-      console.log(errorAuth);
-    }
-
-    console.log(userAuth);
+    signIn();
   };
 
   const logoutHandler = () => {
-    signOut(auth);
+    signOut();
   };
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -163,7 +151,7 @@ function ResponsiveAppBar() {
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              {!userAuth && (
+              {!session && (
                 <Button
                   onClick={loginHandler}
                   sx={{
@@ -175,10 +163,10 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">Login</Typography>
                 </Button>
               )}
-              {userAuth && (
+              {session && (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar {...stringAvatar(userAuth.displayName!)} />
+                    <Avatar {...stringAvatar(session.user!.name!)} />
                   </IconButton>
                 </Tooltip>
               )}
