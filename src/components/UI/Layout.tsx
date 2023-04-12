@@ -3,8 +3,10 @@ import ResponsiveAppBar from "./NavBar";
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <ResponsiveAppBar />
-      <div>{children}</div>
+      <div className="h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-red-900 via-purple-700 to-indigo-100">
+        <ResponsiveAppBar />
+        <div>{children}</div>
+      </div>
     </>
   );
 };

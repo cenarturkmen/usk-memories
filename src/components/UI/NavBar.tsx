@@ -30,7 +30,8 @@ const settings = ["Logout"];
 
 function ResponsiveAppBar() {
   const [userAuth, loadingAuth, errorAuth] = useAuthState(auth);
-  const isMobile = useMediaQuery("500px");
+  const isMobile = useMediaQuery("(max-width:600px)");
+  console.log(isMobile)
   const googleAuth = new GoogleAuthProvider();
   googleAuth.setCustomParameters({
     prompt: "select_account",
@@ -77,7 +78,7 @@ function ResponsiveAppBar() {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ background: "#121212" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             {!isMobile && (
@@ -137,14 +138,17 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              <Link href="/">
-                <Image
-                  src="/images/usk-logo.jpg"
-                  alt="logo"
-                  width={"100"}
-                  height={"100"}
-                />
-              </Link>
+              {isMobile && (
+                <Link href="/">
+                  <Image
+                    src="/images/usk-logo.jpg"
+                    alt="logo"
+                    width={"100"}
+                    height={"100"}
+                    className="rounded-xl"
+                  />
+                </Link>
+              )}
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (

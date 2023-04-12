@@ -1,7 +1,12 @@
+import Manifesto from "@/components/UI/Manifesto";
+import { Container } from "@mui/material";
+
 export default function Home() {
   return (
     <>
-      <h1>Home</h1>
+      <Container maxWidth="xl">
+        <Manifesto />
+      </Container>
     </>
   );
 }
