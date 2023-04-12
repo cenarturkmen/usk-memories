@@ -23,12 +23,15 @@ import React, {
 import addData from "@/firebase/addData";
 import { LoadingButton } from "@mui/lab";
 import { Info } from "@mui/icons-material";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/config";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function Form({ setShowForm }: FormProps) {
+  const [userAuth, loadingAuth, errorAuth] = useAuthState(auth);
   const {
     instagram,
     setInstagram,
@@ -52,6 +55,8 @@ export default function Form({ setShowForm }: FormProps) {
     e.preventDefault();
     const date = Date.now();
     const data = {
+      email: userAuth?.email,
+      auth: userAuth?.providerData[0],
       instagram,
       isUskEvent,
       location,
@@ -60,13 +65,12 @@ export default function Form({ setShowForm }: FormProps) {
       latLng,
       date,
     };
-
     setLoading(true);
-
     setPhotoUrl(convertInstagramUrl(photoUrl));
 
     const { result, error } = await addData("marker", data);
     if (error) {
+      console.log("err", error);
       setError(true);
       setSuccess(false);
     } else {

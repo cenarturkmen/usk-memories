@@ -6,6 +6,8 @@ import { UserMarker } from "./UserMarker";
 import { useState } from "react";
 import { Button, useMediaQuery } from "@mui/material";
 import { MapDataType } from "@/types";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/config";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
@@ -29,10 +31,9 @@ function LeafletMap({
     41.0098, 28.9652,
   ]);
   const [zoom, setZoom] = useState(11);
-
+  const [userAuth] = useAuthState(auth);
   const isMobile = useMediaQuery("(min-width: 768px)");
-  const buttonLeftMargin = isMobile ? "90%" : "80%";
-  console.log(isMobile);
+  const buttonLeftMargin = isMobile ? "86%" : "80%";
 
   return (
     <MapContainer
@@ -69,16 +70,16 @@ function LeafletMap({
           ></Marker>
         ))}
       {showForm && <UserMarker />}
-      {!showForm && (
+      {!showForm && userAuth?.email && (
         <Button
-          variant="contained"
-          color="secondary"
           sx={{
             zIndex: 1000,
             position: "absolute",
             left: buttonLeftMargin,
             marginTop: "10px",
           }}
+          variant="contained"
+          color="secondary"
           onClick={addMarker}
         >
           Add

@@ -1,13 +1,12 @@
-import { themeOptions } from "@/utils/theme";
-import { MapWithBars } from "./../components/Map/MapWithBars";
-import { ThemeProvider } from "@emotion/react";
+import Manifesto from "@/components/UI/Manifesto";
+import { Container } from "@mui/material";
 
 export default function Home() {
   return (
     <>
-      <ThemeProvider theme={themeOptions}>
-        <MapWithBars />
-      </ThemeProvider>
+      <Container maxWidth="xl">
+        <Manifesto />
+      </Container>
     </>
   );
 }
