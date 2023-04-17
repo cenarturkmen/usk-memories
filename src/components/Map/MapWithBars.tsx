@@ -3,13 +3,14 @@ import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import Form from "./Form";
 import { MapDataType } from "@/types";
-import { points } from "./MockData";
 import DataBar from "@/components/Map/DataBar";
-import getData from "@/firebase/getData";
+import { useSession } from "next-auth/react";
 
 const LeafletMapDynamic = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
+
+const points: MapDataType[] = [];
 
 export function MapWithBars() {
   const [showForm, setShowForm] = useState(false);
@@ -18,17 +19,18 @@ export function MapWithBars() {
   const [showRightBar, setShowRightBar] = useState(false);
 
   useEffect(() => {
-    async function _getData() {
-      try {
-        getData().then((res) => {
-          setMarkerData(res);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    _getData();
+    fetch("/api/get-markers", {
+      method: "GET",
+    })
+      .then((res) => {
+        // res.json();
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setMarkerData(data.markers);
+      });
   }, []);
 
   return (

@@ -8,6 +8,5 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  database: process.env.MONGODB_URI,
 };
 export default NextAuth(authOptions);

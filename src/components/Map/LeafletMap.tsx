@@ -30,7 +30,7 @@ function LeafletMap({
     41.0098, 28.9652,
   ]);
   const [zoom, setZoom] = useState(11);
-  const { data: session } = useSession();
+  const { status } = useSession();
   const isMobile = useMediaQuery("(min-width: 768px)");
   const buttonLeftMargin = isMobile ? "86%" : "80%";
 
@@ -69,7 +69,7 @@ function LeafletMap({
           ></Marker>
         ))}
       {showForm && <UserMarker />}
-      {!showForm && session!.user!.email && (
+      {!showForm && status === "authenticated" && (
         <Button
           sx={{
             zIndex: 1000,

@@ -20,18 +20,16 @@ import React, {
   useContext,
   useState,
 } from "react";
-import addData from "@/firebase/addData";
 import { LoadingButton } from "@mui/lab";
 import { Info } from "@mui/icons-material";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/config";
+import { useSession } from "next-auth/react";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function Form({ setShowForm }: FormProps) {
-  const [userAuth, loadingAuth, errorAuth] = useAuthState(auth);
+  const { data: session } = useSession();
   const {
     instagram,
     setInstagram,
@@ -52,11 +50,12 @@ export default function Form({ setShowForm }: FormProps) {
   const [urlError, setUrlError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("submit");
     e.preventDefault();
     const date = Date.now();
     const data = {
-      email: userAuth?.email,
-      auth: userAuth?.providerData[0],
+      email: session?.user?.email,
+      user: session?.user?.name,
       instagram,
       isUskEvent,
       location,
@@ -68,8 +67,19 @@ export default function Form({ setShowForm }: FormProps) {
     setLoading(true);
     setPhotoUrl(convertInstagramUrl(photoUrl));
 
-    const { result, error } = await addData("marker", data);
-    if (error) {
+    const response = await fetch("/api/add-marker", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    setLoading(false);
+    console.log(response);
+    const json = await response.json();
+    console.log(json);
+    setLoading(false);
+    if (json.status != 201) {
       console.log("err", error);
       setError(true);
       setSuccess(false);
@@ -81,7 +91,6 @@ export default function Form({ setShowForm }: FormProps) {
       setPhotoUrl("");
       setDescription("");
     }
-
     setLoading(false);
   };
 

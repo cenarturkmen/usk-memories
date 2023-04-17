@@ -11,11 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import Image from "next/image";
 import Link from "next/link";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/config";
 import { stringAvatar } from "@/utils/navbar-utils";
 import { useMediaQuery } from "@mui/material";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -29,18 +26,8 @@ const pages = [
 const settings = ["Logout"];
 
 function ResponsiveAppBar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const isMobile = useMediaQuery("(max-width:600px)");
-  console.log(isMobile);
-
-  const loginHandler = async () => {
-    signIn();
-  };
-
-  const logoutHandler = () => {
-    signOut();
-  };
-
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -64,6 +51,13 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const loginHandler = async () => {
+    signIn();
+  };
+
+  const logoutHandler = () => {
+    signOut();
+  };
   return (
     <>
       <AppBar position="static" sx={{ background: "#121212" }}>
@@ -151,7 +145,7 @@ function ResponsiveAppBar() {
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              {!session && (
+              {!(status === "authenticated") && (
                 <Button
                   onClick={loginHandler}
                   sx={{
@@ -163,7 +157,7 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">Login</Typography>
                 </Button>
               )}
-              {session && (
+              {status === "authenticated" && (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar {...stringAvatar(session.user!.name!)} />
