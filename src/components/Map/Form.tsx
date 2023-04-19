@@ -50,7 +50,6 @@ export default function Form({ setShowForm }: FormProps) {
   const [urlError, setUrlError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("submit");
     e.preventDefault();
     const date = Date.now();
     const data = {
@@ -75,12 +74,9 @@ export default function Form({ setShowForm }: FormProps) {
       body: JSON.stringify(data),
     });
     setLoading(false);
-    console.log(response);
     const json = await response.json();
-    console.log(json);
     setLoading(false);
     if (json.status != 201) {
-      console.log("err", error);
       setError(true);
       setSuccess(false);
     } else {
@@ -94,25 +90,9 @@ export default function Form({ setShowForm }: FormProps) {
     setLoading(false);
   };
 
-  const instagramValidator = (url: string) => {
-    const convertedUrl = convertInstagramUrl(url);
-    // const regex = new RegExp(
-    //   "https://www.instagram.com/p/([A-Za-z0-9-_]+)/.*/"
-    // );
-    // console.log(convertedUrl);
-    // if (regex.test(convertedUrl)) {
-    setPhotoUrl(convertedUrl);
-    setUrlError(false);
-    return true;
-    // } else {
-    //   setUrlError(true);
-    //   return false;
-    // }
-  };
-
   return (
     <>
-      <div className="mx-2 w-56 center">
+      <div className="px-2 w-56 center bg-primary">
         <div className="flex justify-end">
           <IconButton onClick={() => setShowForm(false)}>
             <CloseIcon className="mb-2" />
@@ -169,9 +149,16 @@ export default function Form({ setShowForm }: FormProps) {
                 error={urlError}
                 aria-describedby="photoUrl"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  if (!instagramLinkValidator(e.target.value)) {
+                    setUrlError(true);
+                    console.log("error");
+                  } else {
+                    setUrlError(false);
+                  }
                   setPhotoUrl(e.target.value);
                 }}
               />
+              {urlError ? "Please enter a valid instagram link" : "aaaa"}
             </FormControl>
             <FormControl required sx={{ marginTop: "10px" }}>
               <FormLabel component="legend">Is this USK Event?</FormLabel>
@@ -222,6 +209,13 @@ export default function Form({ setShowForm }: FormProps) {
       </div>
     </>
   );
+}
+
+// https://www.instagram.com/p/CrH-KZzIMzG/?utm_source=ig_web_copy_link
+
+function instagramLinkValidator(url: string): boolean {
+  const regex = new RegExp("https://www.instagram.com/p/([A-Za-z0-9-_]+)/.*/");
+  return regex.test(url);
 }
 
 function convertInstagramUrl(url: string): string {

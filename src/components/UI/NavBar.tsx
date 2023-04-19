@@ -16,6 +16,7 @@ import Link from "next/link";
 import { stringAvatar } from "@/utils/navbar-utils";
 import { useMediaQuery } from "@mui/material";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Logo from "./Logo";
 
 const pages = [
   { name: "About Us", href: "about-us" },
@@ -27,7 +28,7 @@ const settings = ["Logout"];
 
 function ResponsiveAppBar() {
   const { data: session, status } = useSession();
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -63,16 +64,7 @@ function ResponsiveAppBar() {
       <AppBar position="static" sx={{ background: "#121212" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {!isMobile && (
-              <Link href="/">
-                <Image
-                  src="/images/usk-logo.jpg"
-                  alt="logo"
-                  width={"100"}
-                  height={"100"}
-                />
-              </Link>
-            )}
+            {!isMobile && <Logo dark={false} width={200} height={50} />}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -120,17 +112,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              {isMobile && (
-                <Link href="/">
-                  <Image
-                    src="/images/usk-logo.jpg"
-                    alt="logo"
-                    width={"100"}
-                    height={"100"}
-                    className="rounded-xl"
-                  />
-                </Link>
-              )}
+              {isMobile && <Logo dark={false} width={140} height={50} />}
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (

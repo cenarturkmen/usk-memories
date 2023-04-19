@@ -1,23 +1,25 @@
-import { Box, Card, Typography } from "@mui/material";
+import { Box, Card, Typography, useMediaQuery } from "@mui/material";
+import Image from "next/image";
 
 const Manifesto = () => {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   return (
     <>
       <Card
         sx={{
           display: "flex",
-          justifyContent: "space-around",
+          justifyContent: "space-between",
           flexDirection: "row",
           background: "#121212",
           margin: "3rem 0rem 3rem 0rem",
-          padding: "3rem 0rem 2rem 0rem",
+          padding: isMobile ? "2rem 1rem 2rem 1rem" : "2rem",
           borderRadius: "1rem",
           color: "white",
           opacity: "0.95",
         }}
       >
         <div className="flex flex-col">
-          <Typography variant="h3">Manifesto</Typography>
+          <Typography variant="h4">Manifesto</Typography>
           <Typography variant="h6">
             1. We draw on location, indoors or out, capturing what we see from
             direct observation.
@@ -38,21 +40,21 @@ const Manifesto = () => {
           <Typography variant="h6">
             6. We support each other and draw together.
           </Typography>
-          <Typography variant="h6">
-            7. We share our drawings online.
-          </Typography>
+          <Typography variant="h6">7. We share our drawings online.</Typography>
           <Typography variant="h6">
             8. We show the world, one drawing at a time.
           </Typography>
         </div>
-        <div>
-          <img
-            src="/images/Open Peeps - Bust.png"
-            alt="logo"
-            width={"250"}
-            height={"250"}
-          />
-        </div>
+        {!isMobile && (
+          <div>
+            <Image
+              src="/images/Open Peeps - Bust.png"
+              alt="logo"
+              width={"215"}
+              height={"250"}
+            />
+          </div>
+        )}
       </Card>
     </>
   );

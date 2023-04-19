@@ -2,7 +2,7 @@ import { MapMarkerProvider } from "@/context/MapMarkerContext";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import Form from "./Form";
-import { MapDataType } from "@/types";
+import { MapFormDataType, MarkerDataType } from "@/types";
 import DataBar from "@/components/Map/DataBar";
 import { useSession } from "next-auth/react";
 
@@ -10,28 +10,14 @@ const LeafletMapDynamic = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 
-const points: MapDataType[] = [];
+interface MapWithBarsProps {
+  markers: MarkerDataType[];
+}
 
-export function MapWithBars() {
+export function MapWithBars({ markers }: MapWithBarsProps) {
   const [showForm, setShowForm] = useState(false);
-  const [markerData, setMarkerData] = useState<MapDataType[]>();
-  const [rightBarData, setRightBarData] = useState<MapDataType>();
+  const [rightBarData, setRightBarData] = useState<MapFormDataType>();
   const [showRightBar, setShowRightBar] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/get-markers", {
-      method: "GET",
-    })
-      .then((res) => {
-        // res.json();
-        console.log(res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setMarkerData(data.markers);
-      });
-  }, []);
 
   return (
     <>
@@ -40,7 +26,7 @@ export function MapWithBars() {
           <LeafletMapDynamic
             addMarker={() => setShowForm(true)}
             showForm={showForm}
-            data={markerData!}
+            data={markers!}
             setRightBarData={setRightBarData}
             setShowRightBar={setShowRightBar}
           />

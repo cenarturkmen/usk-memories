@@ -5,7 +5,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("a");
   if (req.method === "GET") {
     try {
       const client = await MongoClient.connect(process.env.MONGO_DB!);

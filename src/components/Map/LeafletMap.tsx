@@ -5,7 +5,7 @@ import L from "leaflet";
 import { UserMarker } from "./UserMarker";
 import { useState } from "react";
 import { Button, useMediaQuery } from "@mui/material";
-import { MapDataType } from "@/types";
+import { MapFormDataType, MarkerDataType } from "@/types";
 import { useSession } from "next-auth/react";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
@@ -13,9 +13,9 @@ const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 interface LeafletMapProps {
   addMarker: () => void;
   showForm: boolean;
-  data: MapDataType[];
+  data: MarkerDataType[];
   setShowRightBar: (state: boolean) => void;
-  setRightBarData: (state: MapDataType) => void;
+  setRightBarData: (state: MapFormDataType) => void;
 }
 
 function LeafletMap({
@@ -31,7 +31,7 @@ function LeafletMap({
   ]);
   const [zoom, setZoom] = useState(11);
   const { status } = useSession();
-  const isMobile = useMediaQuery("(min-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "86%" : "80%";
 
   return (
