@@ -2,34 +2,22 @@ import { MapMarkerProvider } from "@/context/MapMarkerContext";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import Form from "./Form";
-import { MapDataType } from "@/types";
-import { points } from "./MockData";
+import { MapFormDataType, MarkerDataType } from "@/types";
 import DataBar from "@/components/Map/DataBar";
-import getData from "@/firebase/getData";
+import { useSession } from "next-auth/react";
 
 const LeafletMapDynamic = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 
-export function MapWithBars() {
+interface MapWithBarsProps {
+  markers: MarkerDataType[];
+}
+
+export function MapWithBars({ markers }: MapWithBarsProps) {
   const [showForm, setShowForm] = useState(false);
-  const [markerData, setMarkerData] = useState<MapDataType[]>();
-  const [rightBarData, setRightBarData] = useState<MapDataType>();
+  const [rightBarData, setRightBarData] = useState<MapFormDataType>();
   const [showRightBar, setShowRightBar] = useState(false);
-
-  useEffect(() => {
-    async function _getData() {
-      try {
-        getData().then((res) => {
-          setMarkerData(res);
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    _getData();
-  }, []);
 
   return (
     <>
@@ -38,7 +26,7 @@ export function MapWithBars() {
           <LeafletMapDynamic
             addMarker={() => setShowForm(true)}
             showForm={showForm}
-            data={markerData!}
+            data={markers!}
             setRightBarData={setRightBarData}
             setShowRightBar={setShowRightBar}
           />

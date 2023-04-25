@@ -11,14 +11,12 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import Image from "next/image";
 import Link from "next/link";
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/config";
 import { stringAvatar } from "@/utils/navbar-utils";
 import { useMediaQuery } from "@mui/material";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Logo from "./Logo";
 
 const pages = [
   { name: "About Us", href: "about-us" },
@@ -29,30 +27,8 @@ const pages = [
 const settings = ["Logout"];
 
 function ResponsiveAppBar() {
-  const [userAuth, loadingAuth, errorAuth] = useAuthState(auth);
-  const isMobile = useMediaQuery("(max-width:600px)");
-  console.log(isMobile)
-  const googleAuth = new GoogleAuthProvider();
-  googleAuth.setCustomParameters({
-    prompt: "select_account",
-  });
-
-  const loginHandler = async () => {
-    loadingAuth && console.log("loading");
-
-    try {
-      await signInWithPopup(auth, googleAuth);
-    } catch (error) {
-      console.log(errorAuth);
-    }
-
-    console.log(userAuth);
-  };
-
-  const logoutHandler = () => {
-    signOut(auth);
-  };
-
+  const { data: session, status } = useSession();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -76,21 +52,19 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
+  const loginHandler = async () => {
+    signIn();
+  };
+
+  const logoutHandler = () => {
+    signOut();
+  };
   return (
     <>
       <AppBar position="static" sx={{ background: "#121212" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {!isMobile && (
-              <Link href="/">
-                <Image
-                  src="/images/usk-logo.jpg"
-                  alt="logo"
-                  width={"100"}
-                  height={"100"}
-                />
-              </Link>
-            )}
+            {!isMobile && <Logo dark={false} width={200} height={50} />}
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
@@ -138,17 +112,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              {isMobile && (
-                <Link href="/">
-                  <Image
-                    src="/images/usk-logo.jpg"
-                    alt="logo"
-                    width={"100"}
-                    height={"100"}
-                    className="rounded-xl"
-                  />
-                </Link>
-              )}
+              {isMobile && <Logo dark={false} width={140} height={50} />}
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
@@ -163,7 +127,7 @@ function ResponsiveAppBar() {
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              {!userAuth && (
+              {!(status === "authenticated") && (
                 <Button
                   onClick={loginHandler}
                   sx={{
@@ -175,10 +139,10 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">Login</Typography>
                 </Button>
               )}
-              {userAuth && (
+              {status === "authenticated" && (
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar {...stringAvatar(userAuth.displayName!)} />
+                    <Avatar {...stringAvatar(session.user!.name!)} />
                   </IconButton>
                 </Tooltip>
               )}

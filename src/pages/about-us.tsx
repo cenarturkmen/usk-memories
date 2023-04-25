@@ -1,8 +1,16 @@
-export default function AboutUs() {
+import Manifesto from "@/components/UI/Manifesto";
+import Participation from "@/components/UI/Participation";
+import { Container } from "@mui/material";
+
+function AboutUs() {
   return (
     <>
-      <p> Hello</p>
-      Hello
+      <Container maxWidth="xl">
+        <Manifesto />
+        <Participation />
+      </Container>
     </>
   );
 }
+
+export default AboutUs;

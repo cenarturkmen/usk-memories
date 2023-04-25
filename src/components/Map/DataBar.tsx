@@ -48,9 +48,6 @@ export default function DataBar({
       <Typography variant="body1" gutterBottom>
         Description: {description}
       </Typography>
-      {/* <Typography variant="body1" gutterBottom>
-        Coordinates: {latLng}
-      </Typography> */}
       {photoUrl && (
         <Image
           src={convertInstagramUrl(photoUrl) + "media/?size=l"}

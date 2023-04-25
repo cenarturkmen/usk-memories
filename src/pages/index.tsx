@@ -1,12 +1,16 @@
+import PostContainer from "@/components/UI/Blog/PostContainer";
 import Manifesto from "@/components/UI/Manifesto";
-import { Container } from "@mui/material";
+import Participation from "@/components/UI/Participation";
+import { Box, Container } from "@mui/material";
 
-export default function Home() {
+function Home() {
   return (
     <>
       <Container maxWidth="xl">
-        <Manifesto />
+        <PostContainer />
       </Container>
     </>
   );
 }
+
+export default Home;

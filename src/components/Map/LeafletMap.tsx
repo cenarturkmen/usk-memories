@@ -5,18 +5,17 @@ import L from "leaflet";
 import { UserMarker } from "./UserMarker";
 import { useState } from "react";
 import { Button, useMediaQuery } from "@mui/material";
-import { MapDataType } from "@/types";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/firebase/config";
+import { MapFormDataType, MarkerDataType } from "@/types";
+import { useSession } from "next-auth/react";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
 interface LeafletMapProps {
   addMarker: () => void;
   showForm: boolean;
-  data: MapDataType[];
+  data: MarkerDataType[];
   setShowRightBar: (state: boolean) => void;
-  setRightBarData: (state: MapDataType) => void;
+  setRightBarData: (state: MapFormDataType) => void;
 }
 
 function LeafletMap({
@@ -31,8 +30,8 @@ function LeafletMap({
     41.0098, 28.9652,
   ]);
   const [zoom, setZoom] = useState(11);
-  const [userAuth] = useAuthState(auth);
-  const isMobile = useMediaQuery("(min-width: 768px)");
+  const { status } = useSession();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "86%" : "80%";
 
   return (
@@ -70,7 +69,7 @@ function LeafletMap({
           ></Marker>
         ))}
       {showForm && <UserMarker />}
-      {!showForm && userAuth?.email && (
+      {!showForm && status === "authenticated" && (
         <Button
           sx={{
             zIndex: 1000,
