@@ -24,7 +24,7 @@ const pages = [
   { name: "Participation", href: "participation" },
   { name: "Contact Us", href: "contact" },
 ];
-const settings = ["Logout"];
+const settings = ["Logout", "Profile"];
 
 function ResponsiveAppBar() {
   const { data: session, status } = useSession();
@@ -133,7 +133,7 @@ function ResponsiveAppBar() {
                   sx={{
                     my: 2,
                     color: "white",
-                    display: { xs: "none", md: "flex" },
+                    display: { xs: "flex", md: "flex" },
                   }}
                 >
                   <Typography textAlign="center">Login</Typography>
@@ -162,16 +162,22 @@ function ResponsiveAppBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting}
-                    onClick={() => {
-                      handleCloseUserMenu(), logoutHandler();
-                    }}
-                  >
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem
+                  key={"profile"}
+                  onClick={() => {
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Link href={"/profile"}>Profile</Link>
+                </MenuItem>
+                <MenuItem
+                  key={"logout"}
+                  onClick={() => {
+                    handleCloseUserMenu(), logoutHandler();
+                  }}
+                >
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>

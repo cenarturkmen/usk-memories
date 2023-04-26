@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { convertInstagramUrl } from "@/utils/convert-ig-url";
 
 interface DataBarProps {
   instagram: string;
@@ -58,16 +59,4 @@ export default function DataBar({
       )}
     </div>
   );
-}
-
-function convertInstagramUrl(url: string): string {
-  // Remove any query parameters or fragment identifier
-  url = url.split("?")[0].split("#")[0];
-
-  // Ensure the URL ends with a forward slash
-  if (!url.endsWith("/")) {
-    url += "/";
-  }
-
-  return url;
 }

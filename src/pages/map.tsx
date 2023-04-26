@@ -9,9 +9,9 @@ export default function Map() {
   // Temp solution for now, will be replaced with getStaticProps
   useEffect(() => {
     async function getMarkers() {
-      const markersData = await fetch("/api/get-markers").then((res) =>
-        res.json()
-      );
+      const markersData = await fetch("/api/get-markers", {
+        method: "GET",
+      }).then((res) => res.json());
       setMarkers(markersData.markers);
     }
     getMarkers();

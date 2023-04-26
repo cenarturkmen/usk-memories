@@ -1,23 +1,12 @@
 import { Box, Card, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
+import { ItemCard } from "./ItemCard";
 
 const Manifesto = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   return (
     <>
-      <Card
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          background: "#121212",
-          margin: "3rem 0rem 3rem 0rem",
-          padding: isMobile ? "2rem 1rem 2rem 1rem" : "2rem",
-          borderRadius: "1rem",
-          color: "white",
-          opacity: "0.95",
-        }}
-      >
+      <ItemCard>
         <div className="flex flex-col">
           <Typography variant="h4">Manifesto</Typography>
           <Typography variant="h6">
@@ -55,7 +44,7 @@ const Manifesto = () => {
             />
           </div>
         )}
-      </Card>
+      </ItemCard>
     </>
   );
 };
