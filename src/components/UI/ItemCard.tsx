@@ -22,10 +22,10 @@ export function ItemCard(props: ItemCardProps) {
     <Card
       sx={{
         display: "flex",
-        justifyContent:  justify,
+        justifyContent: justify,
         flexDirection: direction,
         background: "#121212",
-        margin: "3rem 0rem 3rem 0rem",
+        margin: "1rem 0rem 3rem 0rem",
         padding: isMobile ? "2rem 1rem 2rem 1rem" : "2rem",
         borderRadius: "1rem",
         color: "white",
