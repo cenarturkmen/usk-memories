@@ -5,6 +5,7 @@ import { ThemeProvider } from "@emotion/react";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { Analytics } from "@vercel/analytics/react";
+import ResponsiveAppBar from "@/components/UI/NavBar";
 
 export default function App({
   Component,
@@ -13,6 +14,20 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <ThemeProvider theme={themeOptions}>
+        {Component.name === "Map" && (
+          <>
+            <div
+              className="min-h-screen
+            flex flex-col justify-between"
+            >
+              <div>
+                <ResponsiveAppBar />
+              </div>
+              <Component {...pageProps} />
+              <Analytics />
+            </div>
+          </>
+        )}
         <Layout>
           <Component {...pageProps} />
           <Analytics />

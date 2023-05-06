@@ -2,15 +2,23 @@ import { MapWithBars } from "@/components/Map/MapWithBars";
 import { MarkerDataType } from "@/types";
 import { useEffect, useState } from "react";
 
-export default function Map() {
+interface MapProps {
+  pageProps: {
+    name: 'map'
+  }
+}
+
+export default function Map({pageProps}: MapProps) {
   const [markers, setMarkers] = useState<MarkerDataType[]>([]);
 
   // Fetch markers from API
   // Temp solution for now, will be replaced with getStaticProps
   useEffect(() => {
     async function getMarkers() {
-      const markers = await fetch("/api/markers").then((res) => res.json());
-      setMarkers(markers);
+      const markersData = await fetch("/api/get-markers", {
+        method: "GET",
+      }).then((res) => res.json());
+      setMarkers(markersData.markers);
     }
     getMarkers();
   }, []);

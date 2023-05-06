@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button, useMediaQuery } from "@mui/material";
 import { MapFormDataType, MarkerDataType } from "@/types";
 import { useSession } from "next-auth/react";
+import { SearchField } from "./SearchField";
 
 const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
@@ -32,7 +33,7 @@ function LeafletMap({
   const [zoom, setZoom] = useState(11);
   const { status } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const buttonLeftMargin = isMobile ? "86%" : "80%";
+  const buttonLeftMargin = isMobile ? "80%" : "80%";
 
   return (
     <MapContainer
@@ -45,6 +46,7 @@ function LeafletMap({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
       />
+
       {data &&
         data.map((point, index) => (
           <Marker
@@ -75,15 +77,19 @@ function LeafletMap({
             zIndex: 1000,
             position: "absolute",
             left: buttonLeftMargin,
-            marginTop: "10px",
+            marginTop: "12px",
+            backgroundColor: "red",
           }}
           variant="contained"
-          color="secondary"
+          color="primary"
           onClick={addMarker}
         >
           Add
         </Button>
       )}
+      <div style={{background: "white"}}>
+      <SearchField />
+      </div>
     </MapContainer>
   );
 }

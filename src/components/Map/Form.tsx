@@ -45,8 +45,7 @@ export default function Form({ setShowForm }: FormProps) {
   } = useContext(MapMarkerContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [succes, setSuccess] = useState(false);
-
+  const [success, setSuccess] = useState(false);
   const [urlError, setUrlError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -92,17 +91,20 @@ export default function Form({ setShowForm }: FormProps) {
 
   return (
     <>
-      <div className="px-2 w-56 center bg-primary">
+      <div className="px-2 center bg-background w-56">
         <div className="flex justify-end">
           <IconButton onClick={() => setShowForm(false)}>
             <CloseIcon className="mb-2" />
           </IconButton>
         </div>
+        <Typography variant="h5" className="text-center">
+          Add a new marker
+        </Typography>
         <form onSubmit={(e) => handleSubmit(e)}>
           <FormGroup sx={{ mb: "30px" }}>
             <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="instagram">
-                Your Instagram Address
+                Your Instagram
               </InputLabel>
               <Input
                 name="instagram"
@@ -175,16 +177,20 @@ export default function Form({ setShowForm }: FormProps) {
               />
             </FormControl>
           </FormGroup>
-          <div className="flex justify-center">
+          <div className="flex flex-col">
             {!loading ? (
-              <Button variant="outlined" type="submit">
-                Sent
-              </Button>
+              <>
+                <Button color="secondary" variant="contained" type="submit">
+                  Send
+                </Button>
+              </>
             ) : (
               <LoadingButton loading>Sending</LoadingButton>
             )}
-            {error ? "Something went wrong" : ""}
-            {succes ? "Succesfully sent" : ""}
+            <div className="flex justify-center pt-4">
+              {error ? "😢 Something went wrong" : ""}
+              {success ? "🎉 Successfully sent" : ""}
+            </div>
           </div>
         </form>
         <div className="flex justify-center mt-10">
@@ -201,8 +207,9 @@ export default function Form({ setShowForm }: FormProps) {
               label={"Make sure that the coordinates are not 0 0"}
               variant="outlined"
             ></Chip>
-            <div className="flex justify-center">
-              {latLng[0]} {latLng[1]}
+            <div className="flex flex-col items-center mt-2">
+              <Typography variant="body2"> {latLng[0].toFixed(4)} </Typography>
+              <Typography variant="body2"> {latLng[1].toFixed(4)} </Typography>
             </div>
           </Typography>
         </div>
