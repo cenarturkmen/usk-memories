@@ -21,8 +21,7 @@ import Logo from "./Logo";
 const pages = [
   { name: "About Us", href: "about-us" },
   { name: "Map", href: "map" },
-  { name: "Participation", href: "participation" },
-  { name: "Contact Us", href: "contact" },
+  { name: "Contact Us", href: "contact-us" },
 ];
 const settings = ["Logout", "Profile"];
 

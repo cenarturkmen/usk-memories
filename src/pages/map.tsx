@@ -2,7 +2,13 @@ import { MapWithBars } from "@/components/Map/MapWithBars";
 import { MarkerDataType } from "@/types";
 import { useEffect, useState } from "react";
 
-export default function Map() {
+interface MapProps {
+  pageProps: {
+    name: 'map'
+  }
+}
+
+export default function Map({pageProps}: MapProps) {
   const [markers, setMarkers] = useState<MarkerDataType[]>([]);
 
   // Fetch markers from API

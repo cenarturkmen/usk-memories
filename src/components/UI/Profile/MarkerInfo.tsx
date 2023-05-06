@@ -34,31 +34,31 @@ export function MarkerInfo(props: MarkerInfoProps) {
 
   return (
     <>
-      <ItemCard>
-        <IGImage
-          src={marker.photoUrl}
-          alt={marker.description}
-          width={250}
-          height={250}
-        />
-        <div className="flex flex-col">
-          <Typography variant="h4">{marker.description}</Typography>
-          <Typography variant="h6">{marker.location}</Typography>
-          <Typography variant="h6">{marker.date}</Typography>
-          <Typography variant="h6">
-            {marker.isUskEvent ? "In Event" : "Solo"}
-          </Typography>
-          <Typography variant="h6">{marker.latLng}</Typography>
-        </div>
-        <div>
-          <Button variant="contained" color="primary">
-            Edit
-          </Button>
-          <Button variant="contained" color="secondary">
-            Delete
-          </Button>
-        </div>
-      </ItemCard>
+        <ItemCard>
+          <IGImage
+            src={marker.photoUrl}
+            alt={marker.description}
+            width={250}
+            height={250}
+          />
+          <div className="flex flex-col">
+            <Typography variant="h4">{marker.description}</Typography>
+            <Typography variant="h6">{marker.location}</Typography>
+            <Typography variant="h6">{marker.date}</Typography>
+            <Typography variant="h6">
+              {marker.isUskEvent ? "In Event" : "Solo"}
+            </Typography>
+            <Typography variant="h6">{marker.latLng}</Typography>
+            <div>
+              <Button variant="contained" color="primary">
+                Edit
+              </Button>
+              <Button variant="contained" color="secondary">
+                Delete
+              </Button>
+            </div>
+          </div>
+        </ItemCard>
     </>
   );
 }

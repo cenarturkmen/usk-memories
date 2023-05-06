@@ -2,6 +2,7 @@ import { MarkerDataType } from "@/types";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { MarkerInfo } from "./MarkerInfo";
+import { ProfileBar } from "./ProfileBar";
 
 export default function UserProfile() {
   const { data: session, status } = useSession();
@@ -21,10 +22,13 @@ export default function UserProfile() {
     console.log(userMarkers);
   }, [session?.user!.email!]);
   return (
-    <div className="mt-2">
-      {userMarkers.map((marker) => (
-        <MarkerInfo marker={marker} />
-      ))}
+    <div className="flex flex-col items-center">
+      <ProfileBar />
+      <div className="mt-2">
+        {userMarkers.map((marker) => (
+          <MarkerInfo marker={marker} />
+        ))}
+      </div>
     </div>
   );
 }

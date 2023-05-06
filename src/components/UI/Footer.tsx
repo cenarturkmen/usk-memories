@@ -1,4 +1,6 @@
+import { Instagram } from "@mui/icons-material";
 import { useMediaQuery } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -7,20 +9,30 @@ export default function Footer() {
     return (
       <footer
         className={
-          "flex justify-center items-center h-16 bg-primary text-white w-full"
+          "flex justify-center items-center h-16 bg-background text-white w-full"
         }
       >
-        Footer
+        <Link
+          href={"https://www.instagram.com/urbansketchersistanbul/"}
+          target="_blank"
+        >
+          <Instagram sx={{ marginRight: "5px" }} />
+          Instagram
+        </Link>
       </footer>
     );
   }
   return (
-    <footer
-      className={
-        "flex justify-center items-center h-16 bg-primary text-white w-full relative bottom-0"
-      }
-    >
-      Footer
+    <footer className="bg-background py-4 relative bottom-0 w-full">
+      <div className="container mx-auto text-center">
+        <Link
+          href={"https://www.instagram.com/urbansketchersistanbul/"}
+          target="_blank"
+        >
+          <Instagram sx={{ marginRight: "5px" }} />
+          Instagram
+        </Link>
+      </div>
     </footer>
   );
 }
