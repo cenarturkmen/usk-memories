@@ -10,7 +10,7 @@ function Home() {
   return (
     <>
       <Container maxWidth="xl">
-        <WeAre />
+        {/* <WeAre /> */}
         <WhoAreWe />
         <WhatWeDo />
         <Manifesto />

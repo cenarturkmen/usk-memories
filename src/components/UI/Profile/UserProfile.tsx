@@ -20,13 +20,13 @@ export default function UserProfile() {
     }
     getUserMarkers();
     console.log(userMarkers);
-  }, [session?.user!.email!]);
+  }, [session?.user, userMarkers]);
   return (
     <div className="flex flex-col items-center">
       <ProfileBar />
       <div className="mt-2">
-        {userMarkers.map((marker) => (
-          <MarkerInfo marker={marker} />
+        {userMarkers.map((marker, index) => (
+          <MarkerInfo key={index} marker={marker} />
         ))}
       </div>
     </div>

@@ -20,7 +20,7 @@ function Profile() {
     }
     getUserMarkers();
     console.log(userMarkers);
-  }, [session?.user!.email!]);
+  }, [session?.user, userMarkers]);
 
   if (status === "loading") {
     return <>loading</>;
