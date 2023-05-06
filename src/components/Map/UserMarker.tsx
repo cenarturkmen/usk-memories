@@ -18,7 +18,11 @@ export function UserMarker() {
     click: (e) => {
       setLatLng([e.latlng.lat, e.latlng.lng]);
     },
+    dragend: (e) => {
+      console.log("dragend", e);
+    }
   });
+
   return (
     <Marker
       position={latLng}

@@ -1,4 +1,4 @@
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -24,10 +24,11 @@ export default function DataBar({
   latLng,
   setShowDataBar,
 }: DataBarProps) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   return (
     <div
-      className="flex flex-col center bg-black absolute mx-2 h-full w-56"
-      style={{ zIndex: 5000 }}
+      className="flex flex-col center bg-background absolute px-2 h-full w-56"
+      style={{ zIndex: 1000 }}
     >
       <div className="flex justify-end">
         <IconButton onClick={() => setShowDataBar(false)}>
@@ -50,12 +51,14 @@ export default function DataBar({
         Description: {description}
       </Typography>
       {photoUrl && (
+        <div className="flex justify-center">
         <Image
           src={convertInstagramUrl(photoUrl) + "media/?size=l"}
           alt={location}
-          width={"300"}
-          height={"500"}
+          width={isMobile ? "150" :"300"}
+          height={"300"}
         />
+        </div>
       )}
     </div>
   );
