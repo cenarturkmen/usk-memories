@@ -1,12 +1,15 @@
 import Contact from "@/components/UI/Contact";
-import { Container, Typography } from "@mui/material";
+import Layout from "@/components/UI/Layout";
+import { Container } from "@mui/material";
 
 export default function ContactUs() {
   return (
     <>
-      <Container maxWidth="xl">
-        <Contact />
-      </Container>
+      <Layout>
+        <Container maxWidth="xl">
+          <Contact />
+        </Container>
+      </Layout>
     </>
   );
 }
