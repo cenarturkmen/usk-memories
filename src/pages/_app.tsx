@@ -1,4 +1,3 @@
-import Layout from "@/components/UI/Layout";
 import "@/styles/globals.css";
 import { themeOptions } from "@/utils/theme";
 import { ThemeProvider } from "@emotion/react";
@@ -14,24 +13,16 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <ThemeProvider theme={themeOptions}>
-        {Component.name === "Map" && (
-          <>
-            <div
-              className="min-h-screen
+        <div
+          className="min-h-screen
             flex flex-col justify-between"
-            >
-              <div>
-                <ResponsiveAppBar />
-              </div>
-              <Component {...pageProps} />
-              <Analytics />
-            </div>
-          </>
-        )}
-        <Layout>
+        >
+          <div>
+            <ResponsiveAppBar />
+          </div>
           <Component {...pageProps} />
           <Analytics />
-        </Layout>
+        </div>
       </ThemeProvider>
     </SessionProvider>
   );
