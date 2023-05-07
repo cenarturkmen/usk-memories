@@ -22,12 +22,12 @@ export function MarkerInfo(props: MarkerInfoProps) {
         />
         <div className="flex flex-col">
           <Typography variant="h4">{marker.description}</Typography>
-          <Typography variant="h6">{marker.location}</Typography>
-          <Typography variant="h6">{marker.date}</Typography>
-          <Typography variant="h6">
+          <Typography variant="h5">{marker.location}</Typography>
+          <Typography variant="h5">{marker.date}</Typography>
+          <Typography variant="h5">
             {marker.isUskEvent ? "In Event" : "Solo"}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h5">
             {marker.latLng as [number, number]}
           </Typography>
           <div>

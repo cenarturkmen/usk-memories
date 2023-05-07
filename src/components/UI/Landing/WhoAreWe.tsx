@@ -21,13 +21,15 @@ export default function WhoAreWe() {
               <Typography variant="h5">
                 We are a group of Istanbul residents who enjoy sketching.{" "}
               </Typography>
-              <Typography variant="h6">
+              <Typography variant="h5">
                 Through social media, we became aware of each other’s existence
                 and began to take sketch walks together in Istanbul.
-                <Typography variant="h6">
-                  Our small group consists of students and workers. On weekends,
-                  we visit museums for sketching and walk around the city.
-                </Typography>
+              </Typography>
+              <Typography variant="h5">
+                Our small group consists of students and workers. On weekends,
+                we visit museums for sketching and walk around the city.
+              </Typography>
+              <Typography variant="h5">
                 And of course, we discuss sketches, pens, paints, and papers
                 extensively!
               </Typography>
@@ -37,7 +39,7 @@ export default function WhoAreWe() {
               >
                 <div className="flex flex-row hover:text-blue-900">
                   <Instagram sx={{ marginTop: "5px" }} />
-                  <Typography variant="h6" sx={{ marginLeft: "5px" }}>
+                  <Typography variant="h5" sx={{ marginLeft: "5px" }}>
                     @urbansketchersistanbul
                   </Typography>
                 </div>
