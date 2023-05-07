@@ -22,7 +22,7 @@ export default function WeAre() {
               >
                 <div className="flex flex-row hover:text-blue-900">
                   <Instagram sx={{ marginTop: "5px" }} />
-                  <Typography variant="h6" sx={{ marginLeft: "5px" }}>
+                  <Typography variant="h5" sx={{ marginLeft: "5px" }}>
                     @urbansketchersistanbul
                   </Typography>
                 </div>

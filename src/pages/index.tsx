@@ -8,7 +8,7 @@ import { Box, Container } from "@mui/material";
 
 function Home() {
   return (
-    <>
+    <div>
       <Container maxWidth="xl">
         {/* <WeAre /> */}
         <WhoAreWe />
@@ -17,7 +17,7 @@ function Home() {
         <Participation />
         {/* <PostContainer /> */}
       </Container>
-    </>
+    </div>
   );
 }
 

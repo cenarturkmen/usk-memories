@@ -11,7 +11,7 @@ export default function UserProfile() {
     async function getUserMarkers() {
       const params = new URLSearchParams({ email: session?.user!.email! });
       const markersData = await fetch(
-        "/api/get-markers-for-profile?" + params,
+        "/api/marker/get-markers-for-profile?" + params,
         {
           method: "GET",
         }

@@ -65,7 +65,7 @@ export default function Form({ setShowForm }: FormProps) {
     setLoading(true);
     setPhotoUrl(convertInstagramUrl(photoUrl));
 
-    const response = await fetch("/api/add-marker", {
+    const response = await fetch("/api/marker/add-marker", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,9 +103,7 @@ export default function Form({ setShowForm }: FormProps) {
         <form onSubmit={(e) => handleSubmit(e)}>
           <FormGroup sx={{ mb: "30px" }}>
             <FormControl sx={{ mb: "10px" }} required>
-              <InputLabel htmlFor="instagram">
-                Your Instagram
-              </InputLabel>
+              <InputLabel htmlFor="instagram">Your Instagram</InputLabel>
               <Input
                 name="instagram"
                 value={instagram}
