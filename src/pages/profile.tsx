@@ -21,7 +21,8 @@ function Profile() {
     }
     getUserMarkers();
     console.log(userMarkers);
-  }, [session?.user, userMarkers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (status === "loading") {
     return <>loading</>;
@@ -44,7 +45,7 @@ function Profile() {
         <Container maxWidth="xl">
           <UserProfile />
         </Container>
-      </Layout> 
+      </Layout>
     </>
   );
 }

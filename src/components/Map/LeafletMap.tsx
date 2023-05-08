@@ -78,7 +78,6 @@ function LeafletMap({
             position: "absolute",
             left: buttonLeftMargin,
             marginTop: "12px",
-            backgroundColor: "red",
           }}
           variant="contained"
           color="primary"
@@ -87,8 +86,8 @@ function LeafletMap({
           Add
         </Button>
       )}
-      <div style={{background: "white"}}>
-      <SearchField />
+      <div style={{ background: "white" }}>
+        <SearchField />
       </div>
     </MapContainer>
   );

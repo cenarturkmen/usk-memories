@@ -23,10 +23,17 @@ import React, {
 import { LoadingButton } from "@mui/lab";
 import { Info } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
+import { convertInstagramUrl } from "@/utils/convert-ig-url";
+import { isValidInstagramPhotoUrl } from "@/utils/is-valid-instagram-url";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
 }
+
+type ErrorMessage = {
+  name: string;
+  message: string;
+};
 
 export default function Form({ setShowForm }: FormProps) {
   const { data: session } = useSession();
@@ -47,6 +54,7 @@ export default function Form({ setShowForm }: FormProps) {
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [urlError, setUrlError] = useState(false);
+  const [errorMessages, setErrorMessages] = useState<ErrorMessage[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +73,40 @@ export default function Form({ setShowForm }: FormProps) {
     setLoading(true);
     setPhotoUrl(convertInstagramUrl(photoUrl));
 
+    console.log(errorMessages);
+
+    if (latLng[0] === 0 && latLng[1] === 0) {
+      setError(true);
+      setSuccess(false);
+      setLoading(false);
+      if (!errorMessages.find((e) => e.name === "latLng")) {
+        errorMessages.push({
+          name: "latLng",
+          message: "Please enter a valid coordinates",
+        });
+
+        return;
+      } else {
+        setErrorMessages(errorMessages.filter((e) => e.name !== "latLng"));
+      }
+    }
+
+    if (!isValidInstagramPhotoUrl(photoUrl)) {
+      setUrlError(true);
+      setLoading(false);
+      setError(true);
+      setSuccess(false);
+      if (!errorMessages.find((e) => e.name === "photoUrl")) {
+        errorMessages.push({
+          name: "photoUrl",
+          message: "Please enter a valid instagram link",
+        });
+      }
+      return;
+    } else {
+      setUrlError(false);
+      setErrorMessages(errorMessages.filter((e) => e.name !== "photoUrl"));
+    }
     const response = await fetch("/api/marker/add-marker", {
       method: "POST",
       headers: {
@@ -72,10 +114,10 @@ export default function Form({ setShowForm }: FormProps) {
       },
       body: JSON.stringify(data),
     });
+
     setLoading(false);
-    const json = await response.json();
-    setLoading(false);
-    if (json.status != 201) {
+
+    if (response.status != 201) {
       setError(true);
       setSuccess(false);
     } else {
@@ -85,6 +127,8 @@ export default function Form({ setShowForm }: FormProps) {
       setLocation("");
       setPhotoUrl("");
       setDescription("");
+      setIsUskEvent(false);
+      setErrorMessages([]);
     }
     setLoading(false);
   };
@@ -149,16 +193,17 @@ export default function Form({ setShowForm }: FormProps) {
                 error={urlError}
                 aria-describedby="photoUrl"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  if (!instagramLinkValidator(e.target.value)) {
+                  if (isValidInstagramPhotoUrl(e.target.value)) {
+                    setUrlError(false);
+                  } else {
                     setUrlError(true);
                     console.log("error");
-                  } else {
-                    setUrlError(false);
                   }
                   setPhotoUrl(e.target.value);
+                  console.log(isValidInstagramPhotoUrl(e.target.value));
                 }}
               />
-              {urlError ? "Please enter a valid instagram link" : "aaaa"}
+              {urlError ? "Please enter a valid instagram link " : ""}
             </FormControl>
             <FormControl required sx={{ marginTop: "10px" }}>
               <FormLabel component="legend">Is this USK Event?</FormLabel>
@@ -185,8 +230,21 @@ export default function Form({ setShowForm }: FormProps) {
             ) : (
               <LoadingButton loading>Sending</LoadingButton>
             )}
-            <div className="flex justify-center pt-4">
-              {error ? "😢 Something went wrong" : ""}
+            <div className="flex flex-col justify-center pt-4">
+              {error ? (
+                <Typography variant="body1">
+                  {" "}
+                  😢 Something went wrong:
+                </Typography>
+              ) : (
+                ""
+              )}
+              {error &&
+                errorMessages.map(({ message }, index) => (
+                  <Typography variant="body2" key={index}>
+                    {message}
+                  </Typography>
+                ))}
               {success ? "🎉 Successfully sent" : ""}
             </div>
           </div>
@@ -214,23 +272,4 @@ export default function Form({ setShowForm }: FormProps) {
       </div>
     </>
   );
-}
-
-// https://www.instagram.com/p/CrH-KZzIMzG/?utm_source=ig_web_copy_link
-
-function instagramLinkValidator(url: string): boolean {
-  const regex = new RegExp("https://www.instagram.com/p/([A-Za-z0-9-_]+)/.*/");
-  return regex.test(url);
-}
-
-function convertInstagramUrl(url: string): string {
-  // Remove any query parameters or fragment identifier
-  url = url.split("?")[0].split("#")[0];
-
-  // Ensure the URL ends with a forward slash
-  if (!url.endsWith("/")) {
-    url += "/";
-  }
-
-  return url;
 }

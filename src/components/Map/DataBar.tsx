@@ -4,6 +4,7 @@ import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { convertInstagramUrl } from "@/utils/convert-ig-url";
+import { IGImage } from "../UI/IGImage";
 
 interface DataBarProps {
   instagram: string;
@@ -52,12 +53,12 @@ export default function DataBar({
       </Typography>
       {photoUrl && (
         <div className="flex justify-center">
-        <Image
-          src={convertInstagramUrl(photoUrl) + "media/?size=l"}
-          alt={location}
-          width={isMobile ? "150" :"300"}
-          height={"300"}
-        />
+          <IGImage
+            src={photoUrl}
+            alt={location}
+            width={isMobile ? 150 : 200}
+            height={200}
+          />
         </div>
       )}
     </div>
