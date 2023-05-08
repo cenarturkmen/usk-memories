@@ -19,7 +19,8 @@ export default function InstaGrid() {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {images.map((image, id) => (
           <Grid key={id} item xs={6}>
-            <IGImage key={id} src={image} alt="a" width={200} height={200} />
+            <IGImage key={id} src={image} alt="a"       width={250}
+            height={250} />
           </Grid>
         ))}
       </Grid>

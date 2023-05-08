@@ -10,14 +10,23 @@ interface IGImageProps {
 }
 
 export function IGImage(props: IGImageProps) {
+  const heightP = props.height + "px";
+  const widthP = props.width + "px";
   return (
-    <Link href={props.src} target="_blank">
-      <Image
-        src={convertInstagramUrl(props.src) + "media/?size=l"}
-        alt={props.alt}
-        width={props.width}
-        height={props.height}
-      />
-    </Link>
+    <div style={{ width: widthP, height: heightP }}>
+      <Link
+        href={props.src}
+        target="_blank"
+        style={{ width: "max-content", display: "inherit" }}
+      >
+        <Image
+          src={convertInstagramUrl(props.src) + "media/?size=l"}
+          alt={props.alt}
+          width={props.width}
+          height={props.height}
+          style={{ objectFit: "contain" }}
+        />
+      </Link>
+    </div>
   );
 }

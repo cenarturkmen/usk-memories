@@ -26,7 +26,7 @@ export function ItemCard(props: ItemCardProps) {
         flexDirection: direction,
         background: "#121212",
         margin: "1rem 0rem 3rem 0rem",
-        padding: isMobile ? "2rem 1rem 2rem 1rem" : "2rem",
+        padding: isMobile ? "2rem 1rem 2rem 1rem" : "3rem",
         borderRadius: "1rem",
         color: "white",
         opacity: "0.95",
