@@ -17,8 +17,8 @@ export function MarkerInfo(props: MarkerInfoProps) {
         <IGImage
           src={marker.photoUrl}
           alt={marker.description}
-          width={250}
-          height={250}
+          width="250"
+          height="250"
         />
         <div className="flex flex-col">
           <Typography variant="h4">{marker.description}</Typography>

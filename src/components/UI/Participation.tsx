@@ -6,8 +6,8 @@ export default function Participation() {
     <>
       <ItemCard>
         <div className="flex flex-col">
-          <Typography variant="h4">Participation</Typography>
-          <Typography variant="h5">
+          <Typography variant="h3">Participation</Typography>
+          <Typography variant="body1">
             The mission of Urban Sketchers Istanbul is to connect urban
             sketchers who want to draw Istanbul. Participating in Urban
             Sketchers Istanbul through events, workshops, Sketchcrawls and

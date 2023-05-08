@@ -1,3 +1,4 @@
+import Layout from "@/components/UI/Layout";
 import UserProfile from "@/components/UI/Profile/UserProfile";
 import { MarkerDataType } from "@/types";
 import { Container } from "@mui/material";
@@ -39,9 +40,11 @@ function Profile() {
 
   return (
     <>
-      <Container maxWidth="xl">
-        <UserProfile />
-      </Container>
+      <Layout>
+        <Container maxWidth="xl">
+          <UserProfile />
+        </Container>
+      </Layout> 
     </>
   );
 }
