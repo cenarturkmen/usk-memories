@@ -5,8 +5,8 @@ import "leaflet/dist/leaflet.css";
 import { MapMarkerContext } from "@/context/MapMarkerContext";
 
 const icon = L.icon({
-  iconUrl: "/images/marker-icon.png",
-  iconSize: [38, 50],
+  iconUrl: "/images/user-marker.png",
+  iconSize: [50, 50],
   shadowSize: [50, 64],
   iconAnchor: [22, 34], // point of the icon which will correspond to marker's location
   popupAnchor: [-3, -25],
@@ -20,7 +20,7 @@ export function UserMarker() {
     },
     dragend: (e) => {
       console.log("dragend", e);
-    }
+    },
   });
 
   return (

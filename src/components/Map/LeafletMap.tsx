@@ -1,15 +1,16 @@
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { LatLngExpression } from "leaflet";
+import { LatLngExpression, map } from "leaflet";
 import L from "leaflet";
 import { UserMarker } from "./UserMarker";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button, useMediaQuery } from "@mui/material";
 import { MapFormDataType, MarkerDataType } from "@/types";
 import { useSession } from "next-auth/react";
 import { SearchField } from "./SearchField";
 
-const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
+const icon = (iconSize: [number, number]) =>
+  L.icon({ iconUrl: "/images/marker-icon.png", iconSize: iconSize });
 
 interface LeafletMapProps {
   addMarker: () => void;
@@ -30,28 +31,44 @@ function LeafletMap({
   const [mapPosition, setMapPosition] = useState<LatLngExpression>([
     41.0098, 28.9652,
   ]);
-  const [zoom, setZoom] = useState(11);
+  //const [zoom, setZoom] = useState(11);
   const { status } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "80%" : "80%";
+  const zoomRef = useRef(null);
+  console.log(zoomRef.current);
+
+  const [Zoom, setZoom] = useState(9);
+
+  console.log(Zoom);
+
+  const MapEvents = () => {
+    useMapEvents({
+      zoomend(e) {
+        setZoom(e.target._zoom);
+      },
+    });
+    return <></>;
+  };
 
   return (
     <MapContainer
       className="w-screen h-screen"
       center={mapPosition}
-      zoom={zoom}
+      zoom={Zoom}
       scrollWheelZoom={true}
+      maxZoom={18}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
       />
-
+      <MapEvents />
       {data &&
         data.map((point, index) => (
           <Marker
             position={L.latLng(point.latLng)}
-            icon={icon}
+            icon={icon(calculateIconSizeWithZoomLevel(Zoom))}
             key={index}
             eventHandlers={{
               click: () => {
@@ -70,6 +87,7 @@ function LeafletMap({
             }}
           ></Marker>
         ))}
+      {/* <Zoom></Zoom> */}
       {showForm && <UserMarker />}
       {!showForm && status === "authenticated" && (
         <Button
@@ -94,3 +112,17 @@ function LeafletMap({
 }
 
 export default LeafletMap;
+
+const calculateIconSizeWithZoomLevel = (zoom: number): [number, number] => {
+  if (zoom < 10) {
+    return [16, 24];
+  }
+  if (zoom < 12) {
+    return [24, 32];
+  }
+  if (zoom < 14) {
+    return [32, 40];
+  }
+
+  return [38, 50];
+};
