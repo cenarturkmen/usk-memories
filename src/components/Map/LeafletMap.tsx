@@ -36,11 +36,7 @@ function LeafletMap({
   const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "80%" : "80%";
   const zoomRef = useRef(null);
-  console.log(zoomRef.current);
-
   const [Zoom, setZoom] = useState(9);
-
-  console.log(Zoom);
 
   const MapEvents = () => {
     useMapEvents({

@@ -1,22 +1,26 @@
 import { MongoClient, ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { set } from "react-hook-form";
 
-// create delete api for marker for profile with using _id
-// _id coming from with params
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === "POST") {
+    try {
+      const data = req.body;
+      const client = await MongoClient.connect(process.env.MONGO_DB!);
+      const db = client.db();
+      const markersCollection = db.collection("markers");
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { method, body, query } = req;
-  const { _id } = query;
+      markersCollection.deleteOne({ _id: new ObjectId(data._id) });
 
-  const client = await MongoClient.connect(process.env.MONGODB_URL!);
+      setTimeout(() => {
+        client.close();
+      }, 1500);
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
 
-  const db = client.db();
-  const markerCollection = db.collection("marker");
-
-  if (method === "DELETE") {
-    const result = await markerCollection.deleteOne({ _id: new ObjectId(_id?.toString()) });
-    client.close();
-    res.status(200).json({ message: "Marker deleted successfully" });
+    res.status(201).json({ message: "Marker deleted" });
   }
 }

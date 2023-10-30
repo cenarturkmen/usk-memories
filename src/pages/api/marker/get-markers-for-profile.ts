@@ -7,6 +7,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
+      const data = req.body
       const client = await MongoClient.connect(process.env.MONGO_DB!);
       const db = client.db();
       const markersCollection = db.collection("markers");

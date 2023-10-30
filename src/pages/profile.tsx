@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 function Profile() {
   const { data: session, status } = useSession();
   const [userMarkers, setUserMarkers] = useState<MarkerDataType[]>([]);
+
   useEffect(() => {
     async function getUserMarkers() {
       const params = new URLSearchParams({ email: session?.user!.email! });
@@ -20,7 +21,6 @@ function Profile() {
       setUserMarkers(markersData.markers);
     }
     getUserMarkers();
-    console.log(userMarkers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

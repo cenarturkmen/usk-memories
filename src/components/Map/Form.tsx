@@ -73,8 +73,6 @@ export default function Form({ setShowForm }: FormProps) {
     setLoading(true);
     setPhotoUrl(convertInstagramUrl(photoUrl));
 
-    console.log(errorMessages);
-
     if (latLng[0] === 0 && latLng[1] === 0) {
       setError(true);
       setSuccess(false);
@@ -197,10 +195,8 @@ export default function Form({ setShowForm }: FormProps) {
                     setUrlError(false);
                   } else {
                     setUrlError(true);
-                    console.log("error");
                   }
                   setPhotoUrl(e.target.value);
-                  console.log(isValidInstagramPhotoUrl(e.target.value));
                 }}
               />
               {urlError ? "Please enter a valid instagram link " : ""}
