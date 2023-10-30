@@ -20,7 +20,7 @@ export default function UserProfile() {
     }
     getUserMarkers();
     console.log(userMarkers);
-  }, [session?.user, userMarkers]);
+  }, []);
   return (
     <div className="flex flex-col items-center">
       <ProfileBar />
