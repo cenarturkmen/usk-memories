@@ -10,11 +10,7 @@ const LeafletMapDynamic = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 
-interface MapWithBarsProps {
-  markers: MarkerDataType[];
-}
-
-export function MapWithBars({ markers }: MapWithBarsProps) {
+export function MapWithBars() {
   const [showForm, setShowForm] = useState(false);
   const [rightBarData, setRightBarData] = useState<MapFormDataType>();
   const [showRightBar, setShowRightBar] = useState(false);
@@ -26,7 +22,6 @@ export function MapWithBars({ markers }: MapWithBarsProps) {
           <LeafletMapDynamic
             addMarker={() => setShowForm(true)}
             showForm={showForm}
-            data={markers!}
             setRightBarData={setRightBarData}
             setShowRightBar={setShowRightBar}
           />
