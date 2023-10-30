@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { SearchField } from "./SearchField";
 
 const icon = (iconSize: [number, number]) =>
-  L.icon({ iconUrl: "/images/marker-icon.png", iconSize: iconSize });
+  L.icon({ iconUrl: "/images/user-marker.png", iconSize: iconSize });
 
 interface LeafletMapProps {
   addMarker: () => void;
@@ -36,11 +36,7 @@ function LeafletMap({
   const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "80%" : "80%";
   const zoomRef = useRef(null);
-  console.log(zoomRef.current);
-
   const [Zoom, setZoom] = useState(9);
-
-  console.log(Zoom);
 
   const MapEvents = () => {
     useMapEvents({
@@ -115,14 +111,14 @@ export default LeafletMap;
 
 const calculateIconSizeWithZoomLevel = (zoom: number): [number, number] => {
   if (zoom < 10) {
-    return [16, 24];
+    return [24, 24];
   }
   if (zoom < 12) {
-    return [24, 32];
+    return [32, 32];
   }
   if (zoom < 14) {
-    return [32, 40];
+    return [40, 40];
   }
 
-  return [38, 50];
+  return [50, 50];
 };

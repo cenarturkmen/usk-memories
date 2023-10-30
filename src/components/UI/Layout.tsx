@@ -1,6 +1,9 @@
 import React from "react";
 import Footer from "./Footer";
-
+ 
+export const metadata = {
+  title: 'USKMemories| Urban Sketchers',
+}
 interface LayoutProps {
   children: React.ReactNode;
 }

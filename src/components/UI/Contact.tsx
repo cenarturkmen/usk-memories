@@ -37,12 +37,7 @@ export default function Contact() {
         email: data.get("email"),
       }),
     });
-    console.log({
-      message: data.get("message"),
-      name: data.get("name"),
-      email: data.get("email"),
-    });
-    console.log(response);
+    
     if (response.status == 200) {
       formRef.current?.reset();
       setSuccess(true);

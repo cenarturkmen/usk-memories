@@ -21,7 +21,7 @@ export default async function handler(
     } catch (error) {
       res.status(500).json({ message: "Something went wrong" });
     }
-  }
 
-  res.status(201).json({ message: "Marker added" });
+    res.status(201).json({ message: "Marker added" });
+  }
 }
