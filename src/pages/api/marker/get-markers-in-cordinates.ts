@@ -21,11 +21,9 @@ export default async function handler(
         })
         .toArray();
 
-      console.log(markers.length);
       setTimeout(() => {
         client.close();
       }, 1500);
-
       res.status(200).json({ markers });
     } catch (error) {
       res.status(500).json({ message: "Something went wrong" });

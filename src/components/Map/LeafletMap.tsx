@@ -29,16 +29,15 @@ function LeafletMap({
   const [mapPosition, setMapPosition] = useState<LatLngExpression>([
     41.0098, 28.9652,
   ]);
-  //const [zoom, setZoom] = useState(11);
-  const { status } = useSession();
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const buttonLeftMargin = isMobile ? "80%" : "80%";
   const [Zoom, setZoom] = useState(9);
   const [markers, setMarkers] = useState<MarkerDataType[]>([]);
   const [boundries, setBoundries] = useState<BoundriesType>({
     _northEast: L.latLng(43, 25),
     _southWest: L.latLng(37, 30),
   });
+  const { status } = useSession();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const buttonLeftMargin = isMobile ? "80%" : "80%";
 
   useEffect(() => {
     async function getMarkers() {
@@ -47,17 +46,17 @@ function LeafletMap({
         southWestLat: boundries._southWest.lat.toString(),
         northEastLng: boundries._northEast.lng.toString(),
         southWestLng: boundries._southWest.lng.toString(),
-
       });
-
       const markersData = await fetch(
         `/api/marker/get-markers-in-cordinates?${params}`,
         {
           method: "GET",
         }
       ).then((res) => res.json());
+
       setMarkers(markersData.markers);
     }
+
     getMarkers();
   }, [boundries]);
 
@@ -68,7 +67,6 @@ function LeafletMap({
       },
 
       moveend(e) {
-        console.log(e.target.getBounds());
         setBoundries(e.target.getBounds());
       },
     });
@@ -83,10 +81,6 @@ function LeafletMap({
       zoom={Zoom}
       scrollWheelZoom={true}
       maxZoom={18}
-      bounds={[
-        [41.0098, 28.9652],
-        [41.0098, 28.9652],
-      ]}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -116,7 +110,6 @@ function LeafletMap({
             }}
           ></Marker>
         ))}
-      {/* <Zoom></Zoom> */}
       {showForm && <UserMarker />}
       {!showForm && status === "authenticated" && (
         <Button
@@ -146,9 +139,11 @@ const calculateIconSizeWithZoomLevel = (zoom: number): [number, number] => {
   if (zoom < 10) {
     return [24, 24];
   }
+  
   if (zoom < 12) {
     return [32, 32];
   }
+  
   if (zoom < 14) {
     return [40, 40];
   }
