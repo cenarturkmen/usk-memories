@@ -9,23 +9,23 @@ interface MapProps {
 }
 
 export default function Map({ pageProps }: MapProps) {
-  const [markers, setMarkers] = useState<MarkerDataType[]>([]);
+  // const [markers, setMarkers] = useState<MarkerDataType[]>([]);
 
-  // Fetch markers from API
-  // Temp solution for now, will be replaced with getStaticProps
-  useEffect(() => {
-    async function getMarkers() {
-      const markersData = await fetch("/api/marker/get-markers", {
-        method: "GET",
-      }).then((res) => res.json());
-      setMarkers(markersData.markers);
-    }
-    getMarkers();
-  }, []);
+  // // Fetch markers from API
+  // // Temp solution for now, will be replaced with getStaticProps
+  // useEffect(() => {
+  //   async function getMarkers() {
+  //     const markersData = await fetch("/api/marker/get-markers", {
+  //       method: "GET",
+  //     }).then((res) => res.json());
+  //     setMarkers(markersData.markers);
+  //   }
+  //   getMarkers();
+  // }, []);
 
   return (
     <>
-      <MapWithBars markers={markers} />
+      <MapWithBars />
     </>
   );
 }

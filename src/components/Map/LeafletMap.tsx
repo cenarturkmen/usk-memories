@@ -3,9 +3,9 @@ import "leaflet/dist/leaflet.css";
 import { LatLngExpression, map } from "leaflet";
 import L from "leaflet";
 import { UserMarker } from "./UserMarker";
-import { useRef, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@mui/material";
-import { MapFormDataType, MarkerDataType } from "@/types";
+import { BoundriesType, MapFormDataType, MarkerDataType } from "@/types";
 import { useSession } from "next-auth/react";
 import { SearchField } from "./SearchField";
 
@@ -15,7 +15,6 @@ const icon = (iconSize: [number, number]) =>
 interface LeafletMapProps {
   addMarker: () => void;
   showForm: boolean;
-  data: MarkerDataType[];
   setShowRightBar: (state: boolean) => void;
   setRightBarData: (state: MapFormDataType) => void;
 }
@@ -23,7 +22,6 @@ interface LeafletMapProps {
 function LeafletMap({
   addMarker,
   showForm,
-  data,
   setShowRightBar,
   setRightBarData,
 }: LeafletMapProps) {
@@ -31,19 +29,48 @@ function LeafletMap({
   const [mapPosition, setMapPosition] = useState<LatLngExpression>([
     41.0098, 28.9652,
   ]);
-  //const [zoom, setZoom] = useState(11);
+  const [Zoom, setZoom] = useState(9);
+  const [markers, setMarkers] = useState<MarkerDataType[]>([]);
+  const [boundries, setBoundries] = useState<BoundriesType>({
+    _northEast: L.latLng(43, 25),
+    _southWest: L.latLng(37, 30),
+  });
   const { status } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "80%" : "80%";
-  const zoomRef = useRef(null);
-  const [Zoom, setZoom] = useState(9);
+
+  useEffect(() => {
+    async function getMarkers() {
+      const params = new URLSearchParams({
+        northEastLat: boundries._northEast.lat.toString(),
+        southWestLat: boundries._southWest.lat.toString(),
+        northEastLng: boundries._northEast.lng.toString(),
+        southWestLng: boundries._southWest.lng.toString(),
+      });
+      const markersData = await fetch(
+        `/api/marker/get-markers-in-cordinates?${params}`,
+        {
+          method: "GET",
+        }
+      ).then((res) => res.json());
+
+      setMarkers(markersData.markers);
+    }
+
+    getMarkers();
+  }, [boundries]);
 
   const MapEvents = () => {
     useMapEvents({
       zoomend(e) {
         setZoom(e.target._zoom);
       },
+
+      moveend(e) {
+        setBoundries(e.target.getBounds());
+      },
     });
+
     return <></>;
   };
 
@@ -60,8 +87,8 @@ function LeafletMap({
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
       />
       <MapEvents />
-      {data &&
-        data.map((point, index) => (
+      {markers &&
+        markers.map((point, index) => (
           <Marker
             position={L.latLng(point.latLng)}
             icon={icon(calculateIconSizeWithZoomLevel(Zoom))}
@@ -83,7 +110,6 @@ function LeafletMap({
             }}
           ></Marker>
         ))}
-      {/* <Zoom></Zoom> */}
       {showForm && <UserMarker />}
       {!showForm && status === "authenticated" && (
         <Button
@@ -100,7 +126,7 @@ function LeafletMap({
           Add
         </Button>
       )}
-      <div style={{ background: "white" }}>
+      <div style={{ background: "transparent" }}>
         <SearchField />
       </div>
     </MapContainer>
@@ -113,9 +139,11 @@ const calculateIconSizeWithZoomLevel = (zoom: number): [number, number] => {
   if (zoom < 10) {
     return [24, 24];
   }
+  
   if (zoom < 12) {
     return [32, 32];
   }
+  
   if (zoom < 14) {
     return [40, 40];
   }

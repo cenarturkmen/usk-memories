@@ -11,12 +11,19 @@ export default async function handler(
       const db = client.db();
       const markersCollection = db.collection("markers");
       const markers = await markersCollection
-        .find({ email: req.query.email?.toString() })
+        .find({
+          $and: [
+            { "latLng.0": { $lte: Number(req.query.northEastLat) + 0.1 } },
+            { "latLng.0": { $gte: Number(req.query.southWestLat) - 0.1 } },
+            { "latLng.1": { $lte: Number(req.query.northEastLng) + 0.1 } },
+            { "latLng.1": { $gte: Number(req.query.southWestLng) - 0.1 } },
+          ],
+        })
         .toArray();
+
       setTimeout(() => {
         client.close();
       }, 1500);
-
       res.status(200).json({ markers });
     } catch (error) {
       res.status(500).json({ message: "Something went wrong" });

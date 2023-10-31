@@ -22,3 +22,8 @@ export type MarkerDataType = {
   user: string;
   date: number;
 };
+
+export type BoundriesType = {
+  _northEast: LatLng;
+  _southWest: LatLng;
+};
