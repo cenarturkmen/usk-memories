@@ -1,10 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { IGImage } from "../IGImage";
-import { Button, Grid, useMediaQuery } from "@mui/material";
+import { Button, useMediaQuery } from "@mui/material";
 import { ItemCard } from "../ItemCard";
 import { MarkerDataType } from "@/types";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 interface MarkerInfoProps {
   marker: MarkerDataType;

@@ -13,18 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import React, { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Info } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { convertInstagramUrl } from "@/utils/convert-ig-url";
 import { isValidInstagramPhotoUrl } from "@/utils/is-valid-instagram-url";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { addMarker } from "./userMarkerSlice";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;
@@ -37,19 +33,17 @@ type ErrorMessage = {
 
 export default function Form({ setShowForm }: FormProps) {
   const { data: session } = useSession();
-  const {
+  const dispatch = useAppDispatch();
+  const userMarker = useAppSelector((state) => state.userMarker);
+  const { instagram, isUskEvent, location, photoUrl, description, latLng } =
+    userMarker.data;
+  const [form, setForm] = useState({
     instagram,
-    setInstagram,
     isUskEvent,
-    setIsUskEvent,
     location,
-    setLocation,
     photoUrl,
-    setPhotoUrl,
     description,
-    setDescription,
-    latLng,
-  } = useContext(MapMarkerContext);
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -58,20 +52,15 @@ export default function Form({ setShowForm }: FormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const date = Date.now();
+
     const data = {
+      date: Date.now(),
       email: session?.user?.email,
       user: session?.user?.name,
-      instagram,
-      isUskEvent,
-      location,
-      description,
-      photoUrl,
       latLng,
-      date,
+      ...form,
     };
     setLoading(true);
-    setPhotoUrl(convertInstagramUrl(photoUrl));
 
     if (latLng[0] === 0 && latLng[1] === 0) {
       setError(true);
@@ -89,7 +78,7 @@ export default function Form({ setShowForm }: FormProps) {
       }
     }
 
-    if (!isValidInstagramPhotoUrl(photoUrl)) {
+    if (!isValidInstagramPhotoUrl(form.photoUrl)) {
       setUrlError(true);
       setLoading(false);
       setError(true);
@@ -105,30 +94,39 @@ export default function Form({ setShowForm }: FormProps) {
       setUrlError(false);
       setErrorMessages(errorMessages.filter((e) => e.name !== "photoUrl"));
     }
-    const response = await fetch("/api/marker/add-marker", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
 
+    dispatch(addMarker(data));
     setLoading(false);
 
-    if (response.status != 201) {
+    if (userMarker.status != "succeeded") {
       setError(true);
       setSuccess(false);
     } else {
       setError(false);
       setSuccess(true);
-      setInstagram("");
-      setLocation("");
-      setPhotoUrl("");
-      setDescription("");
-      setIsUskEvent(false);
+      setForm({
+        instagram: "",
+        isUskEvent: false,
+        location: "",
+        photoUrl: "",
+        description: "",
+      });
       setErrorMessages([]);
     }
     setLoading(false);
+  };
+
+  const formChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name === "isUskEvent") {
+      setForm({ ...form, [e.target.name]: e.target.checked });
+    } else if (e.target.name === "photoUrl") {
+      setForm({
+        ...form,
+        [e.target.name]: convertInstagramUrl(e.target.value),
+      });
+    } else {
+      setForm({ ...form, [e.target.name]: e.target.value });
+    }
   };
 
   return (
@@ -148,55 +146,50 @@ export default function Form({ setShowForm }: FormProps) {
               <InputLabel htmlFor="instagram">Your Instagram</InputLabel>
               <Input
                 name="instagram"
-                value={instagram}
+                value={form.instagram}
                 aria-describedby="instagram"
                 placeholder="Your Instagram Account"
                 required
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setInstagram(e.target.value)
-                }
+                onChange={formChangeHandler}
               />
             </FormControl>
             <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="location">Location</InputLabel>
               <Input
                 name="location"
-                value={location}
+                value={form.location}
                 aria-describedby="location"
                 required
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setLocation(e.target.value)
-                }
+                onChange={formChangeHandler}
               />
             </FormControl>
             <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="description">Description</InputLabel>
               <Input
                 name="description"
-                value={description}
+                value={form.description}
                 required
                 multiline
                 minRows={1}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setDescription(e.target.value)
-                }
+                onChange={formChangeHandler}
               />
             </FormControl>
             <FormControl sx={{ mb: "10px" }} required>
               <InputLabel htmlFor="photoUrl">Photo URL</InputLabel>
               <Input
                 name="photoUrl"
-                value={photoUrl}
                 required
+                value={form.photoUrl}
                 error={urlError}
                 aria-describedby="photoUrl"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  if (isValidInstagramPhotoUrl(e.target.value)) {
-                    setUrlError(false);
-                  } else {
-                    setUrlError(true);
-                  }
-                  setPhotoUrl(e.target.value);
+                  formChangeHandler(e);
+                  // if (isValidInstagramPhotoUrl(e.target.value)) {
+                  //   setUrlError(false);
+                  //   formChangeHandler(e);
+                  // } else {
+                  //   setUrlError(true);
+                  // }
                 }}
               />
               {urlError ? "Please enter a valid instagram link " : ""}
@@ -205,14 +198,9 @@ export default function Form({ setShowForm }: FormProps) {
               <FormLabel component="legend">Is this USK Event?</FormLabel>
               <FormControlLabel
                 control={
-                  <Switch
-                    name="isUskEvent"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      setIsUskEvent(e.target.checked)
-                    }
-                  />
+                  <Switch name="isUskEvent" onChange={formChangeHandler} />
                 }
-                label={isUskEvent ? "Yes" : "No"}
+                label={form.isUskEvent ? "Yes" : "No"}
               />
             </FormControl>
           </FormGroup>

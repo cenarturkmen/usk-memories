@@ -3,6 +3,8 @@ import { Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapMarkerContext } from "@/context/MapMarkerContext";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { setLatLng } from "./userMarkerSlice";
 
 const icon = L.icon({
   iconUrl: "/images/user-marker-select.png",
@@ -13,10 +15,13 @@ const icon = L.icon({
 });
 
 export function UserMarker() {
-  const { setLatLng, latLng } = useContext(MapMarkerContext);
+  const dispatch = useAppDispatch();
+  const latLng = useAppSelector((state) => state.userMarker.data.latLng);
+
+  // const { setLatLng, latLng } = useContext(MapMarkerContext);
   const map = useMapEvents({
     click: (e) => {
-      setLatLng([e.latlng.lat, e.latlng.lng]);
+      dispatch(setLatLng([e.latlng.lat, e.latlng.lng]));
     },
     dragend: (e) => {
       console.log("dragend", e);
