@@ -1,8 +1,5 @@
-// create a slice for the map markers
-
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { get } from "http";
 
 export interface Marker {
   latLng: [number, number];

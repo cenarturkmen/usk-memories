@@ -1,4 +1,3 @@
-import { MapMarkerContext } from "@/context/MapMarkerContext";
 import {
   Button,
   Chip,
@@ -20,7 +19,7 @@ import { useSession } from "next-auth/react";
 import { convertInstagramUrl } from "@/utils/convert-ig-url";
 import { isValidInstagramPhotoUrl } from "@/utils/is-valid-instagram-url";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { addMarker } from "./userMarkerSlice";
+import { addMarker } from "@/store/slices/userMarkerSlice";
 
 interface FormProps {
   setShowForm: Dispatch<SetStateAction<boolean>>;

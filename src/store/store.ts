@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import MarkerReducer from "../components/Map/markerSlice";
-import UserMarkerReducer from "../components/Map/userMarkerSlice";
+import MarkerReducer from "./slices/markerSlice";
+import UserMarkerReducer from "./slices/userMarkerSlice";
+import meetingMarkerReducer from "./slices/meetingMarkerSlice";
 
 export const store = configureStore({
   reducer: {
     marker: MarkerReducer,
     userMarker: UserMarkerReducer,
+    meetingMarker: meetingMarkerReducer,
   },
 });
 

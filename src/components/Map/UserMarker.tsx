@@ -1,10 +1,8 @@
-import { useContext } from "react";
 import { Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { MapMarkerContext } from "@/context/MapMarkerContext";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { setLatLng } from "./userMarkerSlice";
+import { setLatLng } from "@/store/slices/userMarkerSlice";
 
 const icon = L.icon({
   iconUrl: "/images/user-marker-select.png",

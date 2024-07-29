@@ -9,10 +9,17 @@ import { BoundriesType, MapFormDataType } from "@/types";
 import { useSession } from "next-auth/react";
 import { SearchField } from "./SearchField";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { getMarkersInCordinates } from "./markerSlice";
+import { getMarkersInCordinates } from "@/store/slices/markerSlice";
+import { getMeetings } from "@/store/slices/meetingMarkerSlice";
 
 const icon = (iconSize: [number, number]) =>
   L.icon({ iconUrl: "/images/user-marker.png", iconSize: iconSize });
+
+const meetingIcon = (iconSize: [number, number]) =>
+  L.icon({
+    iconUrl: "/images/user-marker-select.png",
+    iconSize: iconSize,
+  });
 
 interface LeafletMapProps {
   addMarker: () => void;
@@ -41,6 +48,7 @@ function LeafletMap({
   const buttonLeftMargin = isMobile ? "80%" : "80%";
   const dispatch = useAppDispatch();
   const marker = useAppSelector((state) => state.marker.data);
+  const meetingMarker = useAppSelector((state) => state.meetingMarker.data);
 
   useEffect(() => {
     async function getMarkers() {
@@ -53,7 +61,6 @@ function LeafletMap({
 
       dispatch(getMarkersInCordinates(params));
     }
-
     getMarkers();
   }, [boundries, dispatch]);
 
@@ -65,6 +72,10 @@ function LeafletMap({
 
       moveend(e) {
         setBoundries(e.target.getBounds());
+      },
+
+      load(e) {
+        dispatch(getMeetings());
       },
     });
 
@@ -84,6 +95,20 @@ function LeafletMap({
         url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
       />
       <MapEvents />
+      {meetingMarker &&
+        meetingMarker.map((point, index) => (
+          <Marker
+            position={L.latLng(point.latLang)}
+            icon={meetingIcon(calculateIconSizeWithZoomLevel(Zoom))}
+            key={index}
+            eventHandlers={{
+              click: () => {
+                setMapPosition(point.latLang);
+                setShowRightBar(true);
+              },
+            }}
+          ></Marker>
+        ))}
       {marker &&
         marker.map((point, index) => (
           <Marker

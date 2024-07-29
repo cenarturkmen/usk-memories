@@ -1,4 +1,4 @@
-import { Marker } from "./markerSlice";
+import { Marker } from "../../store/slices/markerSlice";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
