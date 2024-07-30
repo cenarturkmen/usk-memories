@@ -21,9 +21,7 @@ export function UserMarker() {
     click: (e) => {
       dispatch(setLatLng([e.latlng.lat, e.latlng.lng]));
     },
-    dragend: (e) => {
-      console.log("dragend", e);
-    },
+    dragend: (e) => {},
   });
 
   return (
@@ -31,9 +29,7 @@ export function UserMarker() {
       position={latLng}
       icon={icon}
       eventHandlers={{
-        click: (e) => {
-          console.log("marker clicked", e);
-        },
+        click: (e) => {},
       }}
     >
       <Popup position={latLng}>Add your info to left</Popup>
