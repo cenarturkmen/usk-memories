@@ -91,7 +91,7 @@ function LeafletMap({
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?key=5042e831-cd79-4850-9b83-450b87f962c9"`}
+        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=5042e831-cd79-4850-9b83-450b87f962c9"`}
       />
       <MapEvents />
       {meetingMarker &&
