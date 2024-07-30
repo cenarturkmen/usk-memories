@@ -26,18 +26,12 @@ export const SearchField = () => {
       icon: icon,
       draggable: false,
     },
-    onSubmit: (e: SearchElement) => {
-      console.log("onsubmit", e);
-    },
-    
   });
 
   const map = useMap();
   useEffect(() => {
     map.addControl(searchControl);
-    map.on("geosearch/showlocation", (e) => {
-      console.log("geosearch/showlocation", e);
-    });
+    map.on("geosearch/showlocation", (e) => {});
     return () => {
       map.removeControl(searchControl);
     };

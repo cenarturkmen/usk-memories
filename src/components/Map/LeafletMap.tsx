@@ -12,8 +12,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getMarkersInCordinates } from "@/store/slices/markerSlice";
 import { getMeetings } from "@/store/slices/meetingMarkerSlice";
 
-const stadiaMapsAPIKey = process.env.STADIA_KEY!;
-
 const icon = (iconSize: [number, number]) =>
   L.icon({ iconUrl: "/images/user-marker.png", iconSize: iconSize });
 
@@ -93,7 +91,7 @@ function LeafletMap({
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?key=${stadiaMapsAPIKey}`}
+        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?key=5042e831-cd79-4850-9b83-450b87f962c9"`}
       />
       <MapEvents />
       {meetingMarker &&

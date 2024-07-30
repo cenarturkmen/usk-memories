@@ -42,7 +42,6 @@ const meetingMarkerSlice = createSlice({
       })
       .addCase(getMeetings.fulfilled, (state, action) => {
         state.status = "idle";
-        console.log(state);
         state.data = action.payload;
       })
       .addCase(getMeetings.rejected, (state) => {
