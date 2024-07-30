@@ -12,12 +12,14 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { getMarkersInCordinates } from "@/store/slices/markerSlice";
 import { getMeetings } from "@/store/slices/meetingMarkerSlice";
 
+const stadiaMapsAPIKey = process.env.STADIA_KEY!;
+
 const icon = (iconSize: [number, number]) =>
   L.icon({ iconUrl: "/images/user-marker.png", iconSize: iconSize });
 
 const meetingIcon = (iconSize: [number, number]) =>
   L.icon({
-    iconUrl: "/images/user-marker-select.png",
+    iconUrl: "/images/star.png",
     iconSize: iconSize,
   });
 
@@ -64,18 +66,17 @@ function LeafletMap({
     getMarkers();
   }, [boundries, dispatch]);
 
+  useEffect(() => {
+    dispatch(getMeetings());
+  }, [dispatch]);
+
   const MapEvents = () => {
     useMapEvents({
       zoomend(e) {
         setZoom(e.target._zoom);
       },
-
       moveend(e) {
         setBoundries(e.target.getBounds());
-      },
-
-      load(e) {
-        dispatch(getMeetings());
       },
     });
 
@@ -92,7 +93,7 @@ function LeafletMap({
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?key=${stadiaMapsAPIKey}`}
       />
       <MapEvents />
       {meetingMarker &&
