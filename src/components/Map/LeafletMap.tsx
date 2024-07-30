@@ -5,12 +5,23 @@ import L from "leaflet";
 import { UserMarker } from "./UserMarker";
 import { useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@mui/material";
-import { BoundriesType, MapFormDataType, MarkerDataType } from "@/types";
+import { BoundriesType, MapFormDataType } from "@/types";
 import { useSession } from "next-auth/react";
 import { SearchField } from "./SearchField";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { getMarkersInCordinates } from "@/store/slices/markerSlice";
+import { getMeetings } from "@/store/slices/meetingMarkerSlice";
+
+const stadiaMapsAPIKey = process.env.STADIA_KEY!;
 
 const icon = (iconSize: [number, number]) =>
   L.icon({ iconUrl: "/images/user-marker.png", iconSize: iconSize });
+
+const meetingIcon = (iconSize: [number, number]) =>
+  L.icon({
+    iconUrl: "/images/star.png",
+    iconSize: iconSize,
+  });
 
 interface LeafletMapProps {
   addMarker: () => void;
@@ -30,7 +41,6 @@ function LeafletMap({
     41.0098, 28.9652,
   ]);
   const [Zoom, setZoom] = useState(9);
-  const [markers, setMarkers] = useState<MarkerDataType[]>([]);
   const [boundries, setBoundries] = useState<BoundriesType>({
     _northEast: L.latLng(43, 25),
     _southWest: L.latLng(37, 30),
@@ -38,6 +48,9 @@ function LeafletMap({
   const { status } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const buttonLeftMargin = isMobile ? "80%" : "80%";
+  const dispatch = useAppDispatch();
+  const marker = useAppSelector((state) => state.marker.data);
+  const meetingMarker = useAppSelector((state) => state.meetingMarker.data);
 
   useEffect(() => {
     async function getMarkers() {
@@ -47,25 +60,21 @@ function LeafletMap({
         northEastLng: boundries._northEast.lng.toString(),
         southWestLng: boundries._southWest.lng.toString(),
       });
-      const markersData = await fetch(
-        `/api/marker/get-markers-in-cordinates?${params}`,
-        {
-          method: "GET",
-        }
-      ).then((res) => res.json());
 
-      setMarkers(markersData.markers);
+      dispatch(getMarkersInCordinates(params));
     }
-
     getMarkers();
-  }, [boundries]);
+  }, [boundries, dispatch]);
+
+  useEffect(() => {
+    dispatch(getMeetings());
+  }, [dispatch]);
 
   const MapEvents = () => {
     useMapEvents({
       zoomend(e) {
         setZoom(e.target._zoom);
       },
-
       moveend(e) {
         setBoundries(e.target.getBounds());
       },
@@ -84,11 +93,25 @@ function LeafletMap({
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+        url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?key=${stadiaMapsAPIKey}`}
       />
       <MapEvents />
-      {markers &&
-        markers.map((point, index) => (
+      {meetingMarker &&
+        meetingMarker.map((point, index) => (
+          <Marker
+            position={L.latLng(point.latLang)}
+            icon={meetingIcon(calculateIconSizeWithZoomLevel(Zoom))}
+            key={index}
+            eventHandlers={{
+              click: () => {
+                setMapPosition(point.latLang);
+                setShowRightBar(true);
+              },
+            }}
+          ></Marker>
+        ))}
+      {marker &&
+        marker.map((point, index) => (
           <Marker
             position={L.latLng(point.latLng)}
             icon={icon(calculateIconSizeWithZoomLevel(Zoom))}
@@ -139,11 +162,11 @@ const calculateIconSizeWithZoomLevel = (zoom: number): [number, number] => {
   if (zoom < 10) {
     return [24, 24];
   }
-  
+
   if (zoom < 12) {
     return [32, 32];
   }
-  
+
   if (zoom < 14) {
     return [40, 40];
   }
