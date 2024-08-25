@@ -1,8 +1,24 @@
+/* eslint-disable @next/next/no-img-element */
 import { MdxLayout } from "@/components/BlogLayout";
 import { getPost } from "@/lib/getPost";
 import { getPostSlugs } from "@/lib/getPostSlugs";
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { Typography } from "@mui/material";
+import { MDXRemote } from "next-mdx-remote";
 
+const components = {
+  h1: (props: unknown) => <Typography variant="h1" {...props} />,
+  h2: (props: any) => <Typography variant="h2" {...props} />,
+  p: (props: any) => <Typography variant="body1" {...props} />,
+  img: (props: any) => (
+    <img
+      {...props}
+      style={{ justifySelf: "center", margin: "20px" }}
+      alt="usk"
+    />
+  ),
+  a: (props: any) => <a {...props} href="#" style={{ display: "grid" }} />,
+  // Add more mappings as needed
+};
 type Post = {
   filename: string;
   data: {
@@ -31,9 +47,8 @@ export default function Blog({ post }: { post: Post }) {
   return (
     <MdxLayout>
       <div>
-        <h2>{post.data.title}</h2>
-        <p>{post.data.description}</p>
-        <MDXRemote {...mdxSource} />
+        <Typography variant="h2">{post.data.title}</Typography>
+        <MDXRemote {...mdxSource} components={components} />
       </div>
     </MdxLayout>
   );

@@ -11,21 +11,23 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Image from "next/image";
 import Link from "next/link";
 import { stringAvatar } from "@/utils/navbar-utils";
 import { useMediaQuery } from "@mui/material";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Logo from "./Logo";
+import { useRouter } from "next/router";
 
 const pages = [
-  { name: "About Us", href: "about-us" },
-  { name: "Map", href: "map" },
-  { name: "Contact Us", href: "contact-us" },
+  { name: "About Us", href: "/about-us" },
+  { name: "Map", href: "/map" },
+  { name: "Contact Us", href: "/contact-us" },
+  { name: "Blog", href: "/blog" },
 ];
-const settings = ["Logout", "Profile"];
 
 function ResponsiveAppBar() {
+  const router = useRouter();
+  const basePath = router.pathname;
   const { data: session, status } = useSession();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -95,7 +97,7 @@ function ResponsiveAppBar() {
               >
                 {pages.map((page) => (
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Link href={page.href}>{page.name}</Link>
+                    <Link href={`${basePath}${page.href}`}>{page.name}</Link>
                   </MenuItem>
                 ))}
               </Menu>
