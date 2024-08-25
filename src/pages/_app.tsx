@@ -28,7 +28,6 @@ export default function App({
           </div>
         </ThemeProvider>
       </SessionProvider>
-      `
     </Provider>
   );
 }

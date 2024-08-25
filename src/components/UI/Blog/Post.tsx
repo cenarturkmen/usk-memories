@@ -7,12 +7,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 
 interface PostProps {
+  href: string;
   post: {
     date: string;
     description: string;
-    image: string;
-    imageLabel: string;
     title: string;
+    img: string;
   };
 }
 
@@ -21,7 +21,15 @@ export default function Post(props: PostProps) {
 
   return (
     <Grid item xs={12} md={6} sx={{ marginBottom: "1rem" }}>
-      <CardActionArea component="a" href="#">
+      <CardActionArea
+        sx={{
+          "&:hover": {
+            backgroundColor: "transparent", // Change this to the color you want
+            borderRadius: "1rem",
+          },
+        }}
+        href={props.href}
+      >
         <Card sx={{ display: "flex", borderRadius: "1rem" }}>
           <CardContent sx={{ flex: 1 }}>
             <Typography component="h2" variant="h5">
@@ -33,15 +41,17 @@ export default function Post(props: PostProps) {
             <Typography variant="subtitle1" paragraph>
               {post.description}
             </Typography>
-            <Typography variant="subtitle1" color="primary">
-              Continue reading...
-            </Typography>
           </CardContent>
           <CardMedia
             component="img"
-            sx={{ width: 160, display: { xs: "none", sm: "block" } }}
-            image={post.image}
-            alt={post.imageLabel}
+            sx={{
+              width: 200,
+              padding: "10px",
+              borderRadius: "1.4rem",
+              display: { xs: "flex", sm: "block" },
+            }}
+            image={post.img}
+            alt={post.title}
           />
         </Card>
       </CardActionArea>
