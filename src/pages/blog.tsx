@@ -1,6 +1,5 @@
 import Post from "@/components/UI/Blog/Post";
 import Layout from "@/components/UI/Layout";
-import { getPost } from "@/lib/getPost";
 import { getPosts } from "@/lib/getPosts";
 import { Box, Container, Typography, useMediaQuery } from "@mui/material";
 
@@ -18,7 +17,6 @@ type Posts = {
 
 function Blog(param: { posts: Posts[] }) {
   const isMobile = useMediaQuery("(max-width: 768px)");
-  console.log(param.posts);
 
   return (
     <>

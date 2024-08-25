@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import { MDXRemote } from "next-mdx-remote";
 
 const components = {
-  h1: (props: unknown) => <Typography variant="h1" {...props} />,
+  h1: (props: any) => <Typography variant="h1" {...props} />,
   h2: (props: any) => <Typography variant="h2" {...props} />,
   p: (props: any) => <Typography variant="body1" {...props} />,
   img: (props: any) => (
