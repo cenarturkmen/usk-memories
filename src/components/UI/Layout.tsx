@@ -1,6 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
- 
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 export const metadata = {
   title: 'USKMemories| Urban Sketchers',
 }
@@ -22,6 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
         <div className=" ">
           <Footer />
+          <GoogleAnalytics gaId="G-MBM3T9H0RF" />
         </div>
       </div>
     </>
