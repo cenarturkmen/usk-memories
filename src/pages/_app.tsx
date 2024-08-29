@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import ResponsiveAppBar from "@/components/UI/NavBar";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import Favico from "@/components/Favico";
 
 export default function App({
   Component,
@@ -20,6 +21,7 @@ export default function App({
             className="min-h-screen
             flex flex-col justify-between"
           >
+            <Favico />
             <div>
               <ResponsiveAppBar />
             </div>

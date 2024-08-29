@@ -5,7 +5,7 @@ import { Container } from "@mui/material";
 export default function ContactUs() {
   return (
     <>
-      <Layout>
+      <Layout pageTitle="Contact Us">
         <Container maxWidth="xl">
           <Contact />
         </Container>

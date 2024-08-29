@@ -8,7 +8,7 @@ import CardMedia from "@mui/material/CardMedia";
 import { ItemCard } from "../ItemCard";
 import { useMediaQuery } from "@mui/material";
 
-interface PostProps {
+interface LandingBlogItemProps {
   href: string;
   post: {
     date: string;
@@ -18,12 +18,12 @@ interface PostProps {
   };
 }
 
-export default function Post(props: PostProps) {
+export default function LandingBlogItem(props: LandingBlogItemProps) {
   const { post } = props;
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
-    <Grid item xs={12} md={6} sx={{ marginBottom: "1rem" }}>
+    <Grid item xs={12} md={1} sx={{ marginBottom: "0.5rem" }}>
       <CardActionArea
         sx={{
           "&:hover": {
@@ -38,8 +38,8 @@ export default function Post(props: PostProps) {
             display: "flex",
             flexDirection: isMobile ? "column" : "row",
             background: "#121212",
-            margin: "0rem 0rem 3rem 0rem",
-            padding: isMobile ? "2rem 1rem 2rem 1rem" : "1rem",
+            margin: "1rem 0rem 0.1rem 0rem",
+            padding: isMobile ? "2rem 0rem 2rem 0rem" : "0rem",
             borderRadius: "1rem",
             color: "white",
             opacity: "0.95",

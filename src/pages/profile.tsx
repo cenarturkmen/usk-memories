@@ -41,7 +41,7 @@ function Profile() {
 
   return (
     <>
-      <Layout>
+      <Layout pageTitle="Profile">
         <Container maxWidth="xl">
           <UserProfile />
         </Container>

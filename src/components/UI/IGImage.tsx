@@ -26,7 +26,7 @@ export function IGImage(props: IGImageProps) {
             alt={props.alt}
             width={props.width}
             height={props.height}
-            style={{ objectFit: "contain" }}
+            style={{ objectFit: "fill", borderRadius: "1rem" }}
           />
         </Link>
       </div>
