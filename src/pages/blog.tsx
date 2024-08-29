@@ -17,10 +17,10 @@ type Posts = {
 
 function Blog(param: { posts: Posts[] }) {
   const isMobile = useMediaQuery("(max-width: 768px)");
-
+  console.log(param.posts);
   return (
     <>
-      <Layout>
+      <Layout pageTitle="Blog">
         <Container maxWidth="xl">
           <Typography
             variant="h4"

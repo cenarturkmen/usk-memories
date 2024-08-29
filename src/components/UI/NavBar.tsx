@@ -19,10 +19,9 @@ import Logo from "./Logo";
 import { useRouter } from "next/router";
 
 const pages = [
-  { name: "About Us", href: "/about-us" },
   { name: "Map", href: "/map" },
-  { name: "Contact Us", href: "/contact-us" },
   { name: "Blog", href: "/blog" },
+  { name: "Contact Us", href: "/contact-us" },
 ];
 
 function ResponsiveAppBar() {

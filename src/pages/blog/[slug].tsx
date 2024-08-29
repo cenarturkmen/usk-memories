@@ -4,6 +4,7 @@ import { getPost } from "@/lib/getPost";
 import { getPostSlugs } from "@/lib/getPostSlugs";
 import { Typography } from "@mui/material";
 import { MDXRemote } from "next-mdx-remote";
+import Head from "next/head";
 
 const components = {
   h1: (props: any) => <Typography variant="h1" {...props} />,
@@ -45,12 +46,18 @@ export default function Blog({ post }: { post: Post }) {
     frontmatter: {}, // any frontmatter data
   };
   return (
-    <MdxLayout>
-      <div>
-        <Typography variant="h2">{post.data.title}</Typography>
-        <MDXRemote {...mdxSource} components={components} />
-      </div>
-    </MdxLayout>
+    <>
+      <Head>
+        <title>{post.data.title}</title>
+        <meta property="og:title" content={post.data.title} key="title" />
+      </Head>
+      <MdxLayout>
+        <div>
+          <Typography variant="h2">{post.data.title}</Typography>
+          <MDXRemote {...mdxSource} components={components} />
+        </div>
+      </MdxLayout>
+    </>
   );
 }
 
